@@ -33,10 +33,16 @@ exports.register = async (req, res) => {
             [nama, email, hashedPassword, userRole]
         );
 
-        const [result] = await db.query(
-            'INSERT INTO users (nama, email, password, role) VALUES (?, ?, ?, ?)',
-            [nama, email, hashedPassword, userRole]
-        )
+        res.status(201).json({
+            status: 'success',
+            message: 'Register berhasil',
+            data: {
+                id: result.insertId,
+                nama,
+                email,
+                role: userRole
+            }
+        });
 
     } catch (error) {
         res.status(500).json({
