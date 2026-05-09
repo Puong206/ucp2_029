@@ -104,47 +104,31 @@ exports.updateKatalog = async (req, res) => {
         const { id } = req.params;
         const { kategori_id, brand, model, year, harga_per_hari, image_url, status } = req.body;
 
-        if (!kategori_id || !brand || !model || !year || !harga_per_hari) {
+        if (!kategori_id || !brand || !model || !harga_per_hari) {
             return res.status(400).json({
                 status: 'error',
-                message: 'Kategori, brand, model, year, dan harga_per_hari wajib diisi'
+                message: 'kategori_id, brand, model, dan harga_per_hari wajib diisi!'
             });
         }
 
-        const currentStatus = status || 'Tersedia';
-
         const [result] = await db.query(
-            'UPDATE katalog SET kategori_id = ?, brand = ?, model = ?, year = ?, harga_per_hari = ?, image_url = ?, status = ? WHERE id = ?',
-            [kategori_id, brand, model, year || null, harga_per_hari, image_url || null, currentStatus, id]
+            'UPDATE katalog SET kategori_id=?, brand=?, model=?, year=?, harga_per_hari=?, image_url=?, status=? WHERE id=?',
+            [kategori_id, brand, model, year || null, harga_per_hari, image_url || null, status || 'Tersedia', id]
         );
 
         if (result.affectedRows === 0) {
             return res.status(404).json({
                 status: 'error',
-                message: 'Data katalog tidak ditemukan'
+                message: 'Data katalog tidak ditemukan atau tidak ada perubahan'
             });
         }
 
         res.status(200).json({
             status: 'success',
-            message: 'Data katalog berhasil diperbarui',
-            data: {
-                id,
-                kategori_id,
-                brand,
-                model,
-                year,
-                harga_per_hari,
-                image_url,
-                status: currentStatus
-            }
+            message: 'Data katalog berhasil diperbarui'
         });
-
     } catch (error) {
         console.error(error);
-        res.status(500).json({
-            status: 'error',
-            message: 'Terjadi kesalahan pada server'
-        });
+        res.status(500).json({ status: 'error', message: 'Terjadi kesalahan pada server' });
     }
 };
