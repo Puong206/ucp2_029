@@ -2,6 +2,8 @@ const db = require('../config/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const JWT_SECRET = process.env.JWT_SECRET || 'jwt_secret';
+
 exports.getAllUsers = async (req, res) => {
     try {
         const [rows] = await db.query('SELECT id, username, email FROM users');
