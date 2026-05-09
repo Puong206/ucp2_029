@@ -21,7 +21,13 @@ exports.register = async (req, res) => {
                 status: 'error',
                 message: 'Email sudah terdaftar'
             });
-        }        
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const userRole = role || 'user';
+        
     } catch (error) {
         res.status(500).json({
             status: 'error',
