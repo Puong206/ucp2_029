@@ -27,7 +27,17 @@ exports.register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const userRole = role || 'user';
-        
+
+        const [result] = await db.query(
+            'INSERT INTO users (nama, email, password, role) VALUES (?, ?, ?, ?)',
+            [nama, email, hashedPassword, userRole]
+        );
+
+        const [result] = await db.query(
+            'INSERT INTO users (nama, email, password, role) VALUES (?, ?, ?, ?)',
+            [nama, email, hashedPassword, userRole]
+        )
+
     } catch (error) {
         res.status(500).json({
             status: 'error',
