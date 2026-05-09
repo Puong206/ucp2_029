@@ -1,12 +1,16 @@
 const express = require('express');
-const router = express.router();
+const router = express.Router();
 
 const katalogController = require('../controllers/katalogController');
+const { verifyToken } = require('../middlewares/authMiddleware');
 
+// Public routes (Read only)
 router.get('/', katalogController.getAllKatalog);
-router.post('/', katalogController.createKatalog);
 router.get('/:id', katalogController.getKatalogById);
-router.put('/:id', katalogController.updateKatalog);
-router.delete('/:id', katalogController.deleteKatalog);
+
+// Protected routes (Create, Update, Delete)
+router.post('/', verifyToken, katalogController.createKatalog);
+router.put('/:id', verifyToken, katalogController.updateKatalog);
+router.delete('/:id', verifyToken, katalogController.deleteKatalog);
 
 module.exports = router;
