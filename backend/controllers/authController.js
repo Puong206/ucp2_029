@@ -107,3 +107,46 @@ exports.login = async (req, res) => {
         });
     }
 };
+
+exports.logout = async (req, res) => {
+    try {
+        // In a stateless JWT approach, logout is handled on client side
+        // by removing the token. Here we just send a success response.
+        res.status(200).json({
+            status: 'success',
+            message: 'Logout berhasil. Silakan hapus token dari client.'
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Terjadi kesalahan pada server'
+        });
+    }
+};
+
+exports.getMe = async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        const [users] = await db.query('SELECT id, nama, email, role, created_at FROM users WHERE id = ?', [userId]);
+
+        if (users.length === 0) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'User tidak ditemukan'
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            message: 'Data user berhasil diambil',
+            data: users[0]
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Terjadi kesalahan pada server'
+        });
+    }
+};
