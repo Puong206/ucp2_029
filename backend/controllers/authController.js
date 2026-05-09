@@ -51,3 +51,59 @@ exports.register = async (req, res) => {
         });
     }
 };
+
+exports.login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Email dan password wajib diisi'
+            });
+        }
+
+        const [users] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+        if (users.length === 0) {
+            return res.status(401).json({
+                status: 'error',
+                message: 'Email atau password salah'
+            });
+        }
+
+        const user = users[0];
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({
+                status: 'error',
+                message: 'Email atau password salah'
+            });
+        }
+
+        const payload = {
+            id: user.id,
+            nama: user.nama,
+            role: user.role
+        };
+
+        const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' });
+
+        res.status(200).json({
+            status: 'success',
+            message: 'Login berhasil',
+            token: token,
+            data: {
+                id: user.id,
+                nama: user.nama,
+                email: user.email,
+                role: user.role
+            }
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Terjadi kesalahan pada server'
+        });
+    }
+};
