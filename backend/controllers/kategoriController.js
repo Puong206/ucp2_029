@@ -1,8 +1,8 @@
 const db = require('../config/db');
 
-exports.getAllKategori = (req, res) => {
+exports.getAllKategori = async (req, res) => {
     try {
-        const [rows] = db.query('SELECT * FROM kategori');
+        const [rows] = await db.query('SELECT * FROM kategori');
 
         res.status(200).json({
             status: 'success',
