@@ -77,3 +77,40 @@ exports.createKategori = async (req, res) => {
         });
     }
 };
+
+exports.updateKategori = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nama, deskripsi } = req.body;
+
+        if (!nama) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Nama kategori wajib diisi'
+            });
+        }
+
+        const [result] = await db.query(
+            'UPDATE kategori SET nama = ?, deskripsi = ? WHERE id = ?',
+            [nama, deskripsi || null, id]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                status: 'error',
+                message: 'Kategori tidak ditemukan'
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            message: 'Kategori berhasil diperbarui'
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Terjadi kesalahan pada server'
+        });
+    }
+};
