@@ -6,3 +6,8 @@ app.use(express.json());
 const authRoutes = require('./routes/authRoutes');
 const kategoriRoutes = require('./routes/kategoriRoutes');
 const katalogRoutes = require('./routes/katalogRoutes');
+
+app.use('/api/auth', authRoutes);
+app.use('/api/kategori', kategoriRoutes);
+app.use('/api/katalog', katalogRoutes);
+
