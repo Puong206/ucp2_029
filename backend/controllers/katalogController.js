@@ -56,3 +56,13 @@ exports.getKatalogById = async (req, res) => {
         });
     }
 };
+
+exports.createKatalog = async (req, res) => {
+    try {
+        const { kategori_id, brand, model, year, harga_per_hari, image_url, status } = req.body;
+
+        
+    } catch (error) {
+
+    }
+}
