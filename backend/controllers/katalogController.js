@@ -61,8 +61,40 @@ exports.createKatalog = async (req, res) => {
     try {
         const { kategori_id, brand, model, year, harga_per_hari, image_url, status } = req.body;
 
-        
-    } catch (error) {
+        if (!kategori_id || !brand || !model || !year || !harga_per_hari) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Kategori, brand, model, year, dan harga_per_hari wajib diisi'
+            });
+        }
 
+        const currentStatus = status || 'Tersedia';
+
+        const [result] = await db.query(
+            'INSERT INTO katalog (kategori_id, brand, model, year, harga_per_hari, image_url, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            [kategori_id, brand, model, year || null, harga_per_hari, image_url || null, currentStatus]
+        );
+
+        res.status(201).json({
+            status: 'success',
+            message: 'Data katalog berhasil ditambahkan',
+            data: { 
+                id: result.insertId,
+                kategori_id,
+                brand,
+                model,
+                year,
+                harga_per_hari,
+                image_url,
+                status: currentStatus
+            }
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Terjadi kesalahan pada server'
+        });
     }
-}
+};
