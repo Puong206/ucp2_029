@@ -1,7 +1,6 @@
 part of 'katalog_bloc.dart';
 
 abstract class KatalogState extends Equatable {
-  
   @override
   List<Object> get props => [];
 }
