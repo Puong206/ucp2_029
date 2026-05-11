@@ -11,7 +11,7 @@ class FetchKategori extends KategoriEvent {}
 
 class CreateKategori extends KategoriEvent {
   final Map<String, dynamic> data;
-  CreateKategori({required this.data});
+  const CreateKategori({required this.data});
   
   @override
   List<Object> get props => [data];
@@ -20,7 +20,7 @@ class CreateKategori extends KategoriEvent {
 class UpdateKategori extends KategoriEvent {
   final int id;
   final Map<String, dynamic> data;
-  UpdateKategori({required this.id, required this.data});
+  const UpdateKategori({required this.id, required this.data});
   
   @override
   List<Object> get props => [id, data];
@@ -28,7 +28,7 @@ class UpdateKategori extends KategoriEvent {
 
 class DeleteKategori extends KategoriEvent {
   final int id;
-  DeleteKategori({required this.id});
+  const DeleteKategori({required this.id});
   
   @override
   List<Object> get props => [id];
