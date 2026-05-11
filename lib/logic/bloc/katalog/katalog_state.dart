@@ -20,6 +20,9 @@ class KatalogLoaded extends KatalogState {
 class KatalogError extends KatalogState {
   final String message;
   KatalogError(this.message);
+  
+  @override
+  List<Object> get props => [message];
 }
 
 class KatalogCreatedSuccess extends KatalogState {}

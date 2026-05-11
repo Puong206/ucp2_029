@@ -9,7 +9,7 @@ class FetchKatalog extends KatalogEvent {}
 
 class CreateKatalog extends KatalogEvent {
   final Map<String, dynamic> data;
-  CreateKatalog(this.data);
+  CreateKatalog({required this.data});
   @override
   List<Object> get props => [data];
 }
@@ -17,14 +17,14 @@ class CreateKatalog extends KatalogEvent {
 class UpdateKatalog extends KatalogEvent {
   final int id;
   final Map<String, dynamic> data;
-  UpdateKatalog(this.id, this.data);
+  UpdateKatalog({required this.id, required this.data});
   @override
   List<Object> get props => [id, data];
 }
 
 class DeleteKatalog extends KatalogEvent {
   final int id;
-  DeleteKatalog(this.id);
+  DeleteKatalog({required this.id});
   @override
   List<Object> get props => [id];
 }
