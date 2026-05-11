@@ -1,39 +1,105 @@
-class KatalogModel {
+import 'package:equatable/equatable.dart';
+
+class KatalogModel extends Equatable {
   final int id;
-  final int kategoriId;
+  final int? kategoriId;
   final String brand;
   final String model;
-  final int year;
-  final int harga_per_hari;
-  final String imageUrl;
+  final int? year;
+  final double hargaPerHari;
+  final String? imageUrl;
   final String status;
   final DateTime? createdAt;
+  final String? namaKategori;
 
-  KatalogModel({
+  const KatalogModel({
     required this.id,
-    required this.kategoriId,
+    this.kategoriId,
     required this.brand,
     required this.model,
-    required this.year,
-    required this.harga_per_hari,
-    required this.imageUrl,
+    this.year,
+    required this.hargaPerHari,
+    this.imageUrl,
     required this.status,
     this.createdAt,
+    this.namaKategori,
   });
 
   factory KatalogModel.fromJson(Map<String, dynamic> json) {
     return KatalogModel(
-      id: json['id'] as int,
-      kategoriId: json['kategori_id'] as int,
-      brand: json['brand'] as String? ?? 'Tanpa Brand',
-      model: json['model'] as String? ?? 'Tanpa Model',
-      year: json['year'] as int? ?? 0,
-      harga_per_hari: json['harga_per_hari'] as int? ?? 0,
-      imageUrl: json['image_url'] as String? ?? 'Gambar tidak tersedia',
-      status: json['status'] as String? ?? 'Tidak ada status',
+      id: json['id'] is int ? json['id'] : int.parse(json['id'].toString()),
+      kategoriId: json['kategori_id'] is int
+          ? json['kategori_id']
+          : (json['kategori_id'] != null
+              ? int.tryParse(json['kategori_id'].toString())
+              : null),
+      brand: json['brand'] ?? '',
+      model: json['model'] ?? '',
+      year: json['year'] is int
+          ? json['year']
+          : (json['year'] != null ? int.tryParse(json['year'].toString()) : null),
+      hargaPerHari: json['harga_per_hari'] is num
+          ? (json['harga_per_hari'] as num).toDouble()
+          : double.parse(json['harga_per_hari'].toString()),
+      imageUrl: json['image_url'] as String?,
+      status: json['status'] ?? 'available',
       createdAt: json['created_at'] != null
-          ? DateTime.parse(json['created_at'] as String)
+          ? DateTime.parse(json['created_at'].toString())
           : null,
+      namaKategori: json['nama_kategori'] as String?,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'kategori_id': kategoriId,
+      'brand': brand,
+      'model': model,
+      'year': year,
+      'harga_per_hari': hargaPerHari,
+      'image_url': imageUrl,
+      'status': status,
+    };
+  }
+
+  KatalogModel copyWith({
+    int? id,
+    int? kategoriId,
+    String? brand,
+    String? model,
+    int? year,
+    double? hargaPerHari,
+    String? imageUrl,
+    String? status,
+    DateTime? createdAt,
+    String? namaKategori,
+  }) {
+    return KatalogModel(
+      id: id ?? this.id,
+      kategoriId: kategoriId ?? this.kategoriId,
+      brand: brand ?? this.brand,
+      model: model ?? this.model,
+      year: year ?? this.year,
+      hargaPerHari: hargaPerHari ?? this.hargaPerHari,
+      imageUrl: imageUrl ?? this.imageUrl,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      namaKategori: namaKategori ?? this.namaKategori,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        id,
+        kategoriId,
+        brand,
+        model,
+        year,
+        hargaPerHari,
+        imageUrl,
+        status,
+        createdAt,
+        namaKategori
+      ];
 }
