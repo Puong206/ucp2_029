@@ -13,7 +13,7 @@ class KategoriLoading extends KategoriState {}
 
 class KategoriLoaded extends KategoriState {
   final List<KategoriModel> kategoriList;
-  KategoriLoaded(this.kategoriList);
+  const KategoriLoaded(this.kategoriList);
 
   @override
   List<Object> get props => [kategoriList];
@@ -21,7 +21,7 @@ class KategoriLoaded extends KategoriState {
 
 class KategoriError extends KategoriState {
   final String message;
-  KategoriError(this.message);
+  const KategoriError(this.message);
   
   @override
   List<Object> get props => [message];
