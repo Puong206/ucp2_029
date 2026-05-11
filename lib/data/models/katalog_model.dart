@@ -12,6 +12,7 @@ class KatalogModel extends Equatable {
   final DateTime? createdAt;
   final String? namaKategori;
 
+  /// Constructor utama untuk membuat instance KatalogModel
   const KatalogModel({
     required this.id,
     this.kategoriId,
@@ -25,6 +26,8 @@ class KatalogModel extends Equatable {
     this.namaKategori,
   });
 
+  /// Mengkonversi data JSON dari API menjadi object KatalogModel
+  /// Menangani type conversion dan nilai null dengan aman
   factory KatalogModel.fromJson(Map<String, dynamic> json) {
     return KatalogModel(
       id: json['id'] is int ? json['id'] : int.parse(json['id'].toString()),
@@ -50,6 +53,7 @@ class KatalogModel extends Equatable {
     );
   }
 
+  /// Mengkonversi KatalogModel ke Map JSON untuk dikirim ke API
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -63,6 +67,8 @@ class KatalogModel extends Equatable {
     };
   }
 
+  /// Membuat copy dari KatalogModel dengan beberapa field yang diupdate
+  /// Mempertahankan field lain jika tidak diubah (immutable pattern)
   KatalogModel copyWith({
     int? id,
     int? kategoriId,
@@ -89,6 +95,8 @@ class KatalogModel extends Equatable {
     );
   }
 
+  /// Mendefinisikan field yang digunakan untuk perbandingan equality
+  /// Diperlukan karena extends Equatable
   @override
   List<Object?> get props => [
         id,
