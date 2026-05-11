@@ -28,4 +28,59 @@ class KatalogRepository {
       throw Exception('Gagal memuat katalog: ${response.statusCode} - ${response.body}');
     }
   }
+
+  Future<void> createKatalog(Map<String, dynamic> data) async {
+    final token = await storage.getToken();
+
+    final response = await http.post(
+      Uri.parse('$_baseUrl/katalog'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode != 201 && response.statusCode != 200) {
+      final data = jsonDecode(response.body);
+      throw data['message'] ?? 'Gagal membuat katalog: ${response.statusCode}';
+    }
+  }
+
+  Future<void> updateKatalog(int id, Map<String, dynamic> data) async {
+    final token = await storage.getToken();
+
+    final response = await http.put(
+      Uri.parse('$_baseUrl/katalog/$id'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode != 200) {
+      final data = jsonDecode(response.body);
+      throw data['message'] ?? 'Gagal mengupdate katalog: ${response.statusCode}';
+    }
+  }
+
+  Future<void> deleteKatalog(int id) async {
+    final token = await storage.getToken();
+
+    final response = await http.delete(
+      Uri.parse('$_baseUrl/katalog/$id'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+      },
+    );
+
+    if (response.statusCode != 200 && response.statusCode != 204) {
+      final data = jsonDecode(response.body);
+      throw data['message'] ?? 'Gagal menghapus katalog: ${response.statusCode}';
+    }
+  }
 }
