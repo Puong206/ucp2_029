@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:ucp2/data/models/katalog_model.dart';
-
 import '../providers/storage_provider.dart';
 
 class KatalogRepository {
@@ -25,7 +23,7 @@ class KatalogRepository {
       final List<dynamic> data = body['data'];
       return data.map((item) => KatalogModel.fromJson(item)).toList();
     } else {
-      throw Exception('Gagal memuat katalog: ${response.statusCode} - ${response.body}');
+      throw Exception('Gagal memuat katalog: ${response.statusCode}');
     }
   }
 
