@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class SearchBar extends StatelessWidget {
   final TextEditingController controller;
@@ -40,7 +39,7 @@ class SearchBar extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Color(0xFF1A1A2E0),
+                color: Color(0xFF1A1A2E),
                 shape: BoxShape.circle,
               ),
               child: Icon(Icons.tune, color: Colors.white, size: 20),
