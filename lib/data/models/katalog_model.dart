@@ -5,8 +5,9 @@ class KatalogModel extends Equatable {
   final int? kategoriId;
   final String brand;
   final String model;
-  final int? year;
-  final double hargaPerHari;
+  final int year;
+  final String transmisi;
+  final int kapasitas;
   final String? imageUrl;
   final String status;
   final DateTime? createdAt;
@@ -18,8 +19,9 @@ class KatalogModel extends Equatable {
     this.kategoriId,
     required this.brand,
     required this.model,
-    this.year,
-    required this.hargaPerHari,
+    required this.year,
+    required this.transmisi,
+    required this.kapasitas,
     this.imageUrl,
     required this.status,
     this.createdAt,
@@ -40,12 +42,13 @@ class KatalogModel extends Equatable {
       model: json['model'] ?? '',
       year: json['year'] is int
           ? json['year']
-          : (json['year'] != null ? int.tryParse(json['year'].toString()) : null),
-      hargaPerHari: json['harga_per_hari'] is num
-          ? (json['harga_per_hari'] as num).toDouble()
-          : double.parse(json['harga_per_hari'].toString()),
+          : int.parse(json['year'].toString()),
+      transmisi: json['transmisi'] ?? '',
+      kapasitas: json['kapasitas'] is int
+          ? json['kapasitas']
+          : int.parse(json['kapasitas'].toString()),
       imageUrl: json['image_url'] as String?,
-      status: json['status'] ?? 'available',
+      status: json['status'] ?? 'tersedia',
       createdAt: json['created_at'] != null
           ? DateTime.parse(json['created_at'].toString())
           : null,
@@ -61,7 +64,8 @@ class KatalogModel extends Equatable {
       'brand': brand,
       'model': model,
       'year': year,
-      'harga_per_hari': hargaPerHari,
+      'transmisi': transmisi,
+      'kapasitas': kapasitas,
       'image_url': imageUrl,
       'status': status,
     };
@@ -75,7 +79,8 @@ class KatalogModel extends Equatable {
     String? brand,
     String? model,
     int? year,
-    double? hargaPerHari,
+    String? transmisi,
+    int? kapasitas,
     String? imageUrl,
     String? status,
     DateTime? createdAt,
@@ -87,7 +92,8 @@ class KatalogModel extends Equatable {
       brand: brand ?? this.brand,
       model: model ?? this.model,
       year: year ?? this.year,
-      hargaPerHari: hargaPerHari ?? this.hargaPerHari,
+      transmisi: transmisi ?? this.transmisi,
+      kapasitas: kapasitas ?? this.kapasitas,
       imageUrl: imageUrl ?? this.imageUrl,
       status: status ?? this.status,
       createdAt: createdAt ?? this.createdAt,
@@ -104,10 +110,11 @@ class KatalogModel extends Equatable {
         brand,
         model,
         year,
-        hargaPerHari,
+        transmisi,
+        kapasitas,
         imageUrl,
         status,
         createdAt,
-        namaKategori
+        namaKategori,
       ];
 }

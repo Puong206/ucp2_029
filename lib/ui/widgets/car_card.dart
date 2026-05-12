@@ -102,7 +102,7 @@ class CarCard extends StatelessWidget{
                   ),
                   SizedBox(height: 4),
                   Text(
-                    'Rp ${katalog.hargaPerHari.toStringAsFixed(0)}/hari',
+                    '${katalog.transmisi} • ${katalog.kapasitas} cc',
                     style: TextStyle(
                       fontSize: 12,
                       color: Color(0xFFFFB84D),
