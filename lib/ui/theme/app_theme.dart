@@ -6,6 +6,8 @@ class AppTheme {
   static const Color accentColor = Color(0xFFE74C3C);
   static const Color neutralLight = Color(0xFFF5F5F5);
   static const Color neutralDark = Color(0xFF333333);
+  static const Color errorColor = Color(0xFFE74C3C);
+  static const Color successColor = Color(0xFF27AE60);
 
   static ThemeData get lightTheme {
     return ThemeData(
