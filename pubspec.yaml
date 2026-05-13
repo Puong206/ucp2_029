@@ -82,26 +82,29 @@ flutter:
   fonts:
     - family: Mont
       fonts:
-        - asset: assets/fonts/Mont_Thin.ttf
+        - asset: assets/fonts/Mont_Regular.ttf
           weight: 100
         - asset: assets/fonts/Mont_Regular.ttf
+          weight: 200
+        - asset: assets/fonts/Mont_Regular.ttf
+          weight: 300
+        - asset: assets/fonts/Mont_Regular.ttf
           weight: 400
+        - asset: assets/fonts/Mont_Regular.ttf
+          weight: 500
+        - asset: assets/fonts/Mont_Bold.ttf
+          weight: 600
         - asset: assets/fonts/Mont_Bold.ttf
           weight: 700
-    - family: MontBlanc
-      fonts:
-        - asset: assets/fonts/Mont_Blanc_ExtraLight.ttf
-          weight: 200
+        - asset: assets/fonts/Mont_Bold.ttf
+          weight: 800
+        - asset: assets/fonts/Mont_Blanc_ExtraBold.ttf
+          weight: 900
         - asset: assets/fonts/Mont_Blanc_Regular_Italic.ttf
           weight: 400
           style: italic
         - asset: assets/fonts/Mont_Blanc_Bold_Italic.ttf
           weight: 700
-          style: italic
-        - asset: assets/fonts/Mont_Blanc_ExtraBold.ttf
-          weight: 800
-        - asset: assets/fonts/Mont_Blanc_Thin_Italic.ttf
-          weight: 100
           style: italic
   #
   # For details regarding fonts from package dependencies,
