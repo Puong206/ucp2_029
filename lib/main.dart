@@ -7,6 +7,8 @@ import 'package:ucp2/logic/bloc/katalog/katalog_bloc.dart';
 import 'package:ucp2/data/repositories/auth_repository.dart';
 import 'package:ucp2/data/repositories/katalog_repository.dart';
 import 'package:ucp2/ui/pages/homepage.dart';
+import 'package:ucp2/ui/pages/katalogpage.dart';
+import 'package:ucp2/ui/pages/kategoripage.dart';
 import 'package:ucp2/ui/pages/loginpage.dart';
 import 'package:ucp2/ui/pages/registerpage.dart';
 import 'package:ucp2/ui/theme/app_theme.dart';
@@ -44,8 +46,8 @@ class MyApp extends StatelessWidget {
           '/login': (context) => LoginPage(),
           '/register': (context) => RegisterPage(),
           '/home': (context) => Homepage(),
-          // '/katalog': (context) => KatalogPage(),
-          // '/kategori': (context) => KategoriPage(),
+          '/katalog': (context) => KatalogPage(),
+          '/kategori': (context) => KategoriPage(),
         },
       ),
     );
