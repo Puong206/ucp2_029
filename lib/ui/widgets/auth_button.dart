@@ -3,17 +3,17 @@ import 'package:ucp2/ui/theme/app_theme.dart';
 
 class AuthButton extends StatelessWidget {
   final String label;
-  final Function() onPressed;
-  final bool isLoading;
+  final VoidCallback onPressed;
   final bool isOutlined;
+  final bool isLoading;
   final double? width;
   final double height;
-  
+
   const AuthButton({
     required this.label,
     required this.onPressed,
-    this.isLoading = false,
     this.isOutlined = false,
+    this.isLoading = false,
     this.width,
     this.height = 50,
   });
@@ -26,51 +26,45 @@ class AuthButton extends StatelessWidget {
       child: isOutlined
           ? OutlinedButton(
               onPressed: isLoading ? null : onPressed,
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(color: AppTheme.primaryColor, width: 2),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              ),
               child: isLoading
                   ? SizedBox(
                       height: 20,
                       width: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          AppTheme.primaryColor,
+                        ),
                       ),
                     )
                   : Text(
                       label,
                       style: TextStyle(
-                        color: AppTheme.primaryColor,
+                        fontFamily: 'Mont',
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
             )
           : ElevatedButton(
               onPressed: isLoading ? null : onPressed,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.primaryColor,
-                disabledBackgroundColor: Color(0xFFCCCCCC),
-                elevation: 0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              ),
               child: isLoading
                   ? SizedBox(
                       height: 20,
                       width: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          AppTheme.surfaceColor,
+                        ),
                       ),
                     )
                   : Text(
                       label,
                       style: TextStyle(
-                        color: Colors.white,
+                        fontFamily: 'Mont',
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
             ),
