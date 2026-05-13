@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ucp2/logic/bloc/auth/auth_bloc.dart';
@@ -7,37 +6,6 @@ import 'package:ucp2/logic/bloc/auth/auth_state.dart';
 import 'package:ucp2/ui/theme/app_theme.dart';
 import 'package:ucp2/ui/widgets/auth_button.dart';
 import 'package:ucp2/ui/widgets/auth_text_field.dart';
-
-class _SocialButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final Function() onPressed;
-  
-  const _SocialButton({required this.icon, required this.label, required this.onPressed});
-  
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        height: 50,
-        decoration: BoxDecoration(
-          border: Border.all(color: Color(0xFFDDDDDD), width: 1.5),
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 18, color: AppTheme.primaryColor),
-            SizedBox(width: 6),
-            Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppTheme.primaryColor)),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class LoginPage extends StatefulWidget {
   @override
@@ -49,16 +17,29 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _rememberMe = false;
-  
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _login() {
+    if (_formKey.currentState!.validate()) {
+      context.read<AuthBloc>().add(
+            LoginRequested(
+              email: _emailController.text,
+              password: _passwordController.text,
+            ),
+          );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.neutralLight,
-      appBar: AppBar(
-        backgroundColor: AppTheme.neutralLight,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-      ),
+      backgroundColor: AppTheme.backgroundColor,
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is Authenticated) {
@@ -68,62 +49,77 @@ class _LoginPageState extends State<LoginPage> {
               SnackBar(
                 content: Text(state.message),
                 backgroundColor: AppTheme.errorColor,
-              )
+              ),
             );
           }
         },
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(20, 20, 20, 30),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 24),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Header
                   Text(
-                    'Selamat Datang!',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: AppTheme.primaryColor
-                    ),
+                    'Welcome Back',
+                    style: Theme.of(context).textTheme.displayMedium,
                   ),
+                  SizedBox(height: 8),
                   Text(
-                    'Login ke Akun DriveEase Anda',
-                    style: TextStyle(fontSize: 16, color: Color(0xFF999999)),
+                    'Sign in to your account to continue',
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   SizedBox(height: 32),
 
+                  // Email Field
                   AuthTextField(
                     label: 'Email',
-                    hintText: 'Masukkan Email Anda',
+                    hint: 'Enter your email',
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    prefixIcon: Icons.email_outlined,
+                    prefixIcon: Icon(
+                      Icons.email_outlined,
+                      color: AppTheme.textSecondary,
+                    ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Email is required';
-                      if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) return 'Enter a valid email';
+                      if (value?.isEmpty ?? true) {
+                        return 'Email is required';
+                      }
+                      if (!value!.contains('@')) {
+                        return 'Enter a valid email';
+                      }
                       return null;
                     },
                   ),
-                  SizedBox(height: 18),
-                  
+                  SizedBox(height: 16),
+
+                  // Password Field
                   AuthTextField(
                     label: 'Password',
-                    hintText: 'Masukkan Password',
+                    hint: 'Enter your password',
                     controller: _passwordController,
                     isPassword: true,
-                    prefixIcon: Icons.lock_outlined,
+                    prefixIcon: Icon(
+                      Icons.lock_outline,
+                      color: AppTheme.textSecondary,
+                    ),
                     validator: (value) {
-                      if (value == null || value.isEmpty) return 'Password harus diisi';
-                      if (value.length < 8) return 'Password minimal 8 karakter';
+                      if (value?.isEmpty ?? true) {
+                        return 'Password is required';
+                      }
+                      if (value!.length < 6) {
+                        return 'Password must be at least 6 characters';
+                      }
                       return null;
                     },
                   ),
-                  SizedBox(height: 8),
-                  
+                  SizedBox(height: 12),
+
+                  // Remember Me & Forgot Password
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
@@ -132,51 +128,117 @@ class _LoginPageState extends State<LoginPage> {
                             onChanged: (value) {
                               setState(() => _rememberMe = value ?? false);
                             },
-                            activeColor: AppTheme.secondaryColor,
-                            checkColor: AppTheme.primaryColor,
-                            side: BorderSide(color: AppTheme.secondaryColor, width: 2),
+                            activeColor: AppTheme.primaryColor,
                           ),
-                          Text('Ingat saya', style: TextStyle(fontSize: 14, color: AppTheme.primaryColor)),
+                          Text(
+                            'Remember me',
+                            style: TextStyle(
+                              fontFamily: 'Mont',
+                              fontSize: 14,
+                              color: AppTheme.textSecondary,
+                            ),
+                          ),
                         ],
+                      ),
+                      TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          'Forgot Password?',
+                          style: TextStyle(
+                            fontFamily: 'Mont',
+                            fontSize: 14,
+                            color: AppTheme.secondaryColor,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 8),
-                  
+                  SizedBox(height: 24),
+
+                  // Login Button
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
+                      bool isLoading = state is AuthLoading;
                       return AuthButton(
-                        label: 'Login',
-                        isLoading: state is AuthLoading,
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            context.read<AuthBloc>().add(
-                              LoginRequested(
-                                email: _emailController.text.trim(),
-                                password: _passwordController.text,
-                              ),
-                            );
-                          }
-                        },
+                        label: 'Sign In',
+                        onPressed: _login,
+                        isLoading: isLoading,
                       );
                     },
                   ),
-                  SizedBox(height: 18),
+                  SizedBox(height: 24),
 
-                  Center(
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(text: "Belum punya akun? ", style: TextStyle(fontSize: 13, color: Color(0xFF999999))),
-                          TextSpan(
-                            text: 'Daftar disini!',
-                            style: TextStyle(fontSize: 13, color: AppTheme.secondaryColor, fontWeight: FontWeight.bold),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () => Navigator.of(context).pushReplacementNamed('/register'),
+                  // Divider
+                  Row(
+                    children: [
+                      Expanded(child: Divider(color: AppTheme.borderColor)),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
+                          'OR',
+                          style: TextStyle(
+                            fontFamily: 'Mont',
+                            fontSize: 12,
+                            color: AppTheme.textTertiary,
+                            fontWeight: FontWeight.w700,
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                      Expanded(child: Divider(color: AppTheme.borderColor)),
+                    ],
+                  ),
+                  SizedBox(height: 24),
+
+                  // Social Buttons
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () {},
+                          icon: Icon(Icons.g_mobiledata, size: 20),
+                          label: Text('Google'),
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () {},
+                          icon: Icon(Icons.facebook, size: 20),
+                          label: Text('Facebook'),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 24),
+
+                  // Sign Up Link
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Don't have an account? ",
+                        style: TextStyle(
+                          fontFamily: 'Mont',
+                          fontSize: 14,
+                          color: AppTheme.textSecondary,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/register');
+                        },
+                        child: Text(
+                          'Sign Up',
+                          style: TextStyle(
+                            fontFamily: 'Mont',
+                            fontSize: 14,
+                            color: AppTheme.secondaryColor,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -185,12 +247,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-  
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
   }
 }
