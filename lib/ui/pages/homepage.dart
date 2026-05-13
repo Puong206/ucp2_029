@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ucp2/logic/bloc/auth/auth_bloc.dart';
 import 'package:ucp2/logic/bloc/auth/auth_event.dart';
+import 'package:ucp2/logic/bloc/auth/auth_state.dart';
 import 'package:ucp2/logic/bloc/katalog/katalog_bloc.dart';
 import 'package:ucp2/ui/theme/app_theme.dart';
+import 'package:ucp2/ui/widgets/car_card.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -33,7 +35,194 @@ class _HomepageState extends State<Homepage> {
             onPressed: () {
               context.read<AuthBloc>().add(LogoutRequested());
             },
-          )
+          ),
+        ],
+      ),
+      body: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, authState) {
+          String userName = 'User';
+          if (authState is Authenticated) {
+            userName = authState.user.nama;
+          }
+
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Selamat Datang, $userName!',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Temukan mobil impianmu dengan mudah',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      )
+                    ],
+                  ),
+                ),
+
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primaryColor,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Browse Categories',
+                              style: TextStyle(
+                                fontFamily: 'Mont',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: AppTheme.surfaceColor,
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'Explore our wide selection',
+                              style: TextStyle(
+                                fontFamily: 'Mont',
+                                fontSize: 12,
+                                color: AppTheme.surfaceColor
+                                    .withOpacity(0.8),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/kategori');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppTheme.secondaryColor,
+                          foregroundColor: AppTheme.primaryColor,
+                        ),
+                        child: Text('Explore'),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 24),
+
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Featured Cars',
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed('/katalog');
+                        },
+                        child: Text(
+                          'View All',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: AppTheme.secondaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 16),
+
+                BlocBuilder<KatalogBloc, KatalogState>(
+                  builder: (context, state) {
+                    if (state is KatalogLoading) {
+                      return Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(40),
+                          child: CircularProgressIndicator(
+                            color: AppTheme.primaryColor,
+                          ),
+                        ),
+                      );
+                    } else if (state is KatalogLoaded) {
+                      return GridView.builder(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 12,
+                          mainAxisSpacing: 12,
+                          childAspectRatio: 0.7,
+                        ),
+                        itemCount:
+                            state.katalogList.length > 4 ? 4 : state.katalogList.length,
+                        itemBuilder: (context, index) {
+                          final katalog = state.katalogList[index];
+                          return CarCard(
+                            brand: katalog.brand,
+                            model: katalog.model,
+                            year: katalog.year,
+                            imageUrl: katalog.imageUrl,
+                            transmisi: katalog.transmisi,
+                            kapasitas: katalog.kapasitas,
+                            status: katalog.status,
+                          );
+                        },
+                      );
+                    } else if (state is KatalogError) {
+                      return Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(40),
+                          child: Text(
+                            'Error: ${state.message}',
+                            style: TextStyle(color: AppTheme.errorColor),
+                          ),
+                        ),
+                      );
+                    }
+
+                    return Container();
+                  },
+                ),
+                SizedBox(height: 24),
+              ],
+            ),
+          );
+        },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: 0,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.car_rental),
+            label: 'Browse',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Favorites',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
         ],
       ),
     );
