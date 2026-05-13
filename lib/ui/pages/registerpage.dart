@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ucp2/logic/bloc/auth/auth_bloc.dart';
@@ -6,8 +5,6 @@ import 'package:ucp2/logic/bloc/auth/auth_event.dart';
 import 'package:ucp2/logic/bloc/auth/auth_state.dart';
 import 'package:ucp2/ui/widgets/auth_button.dart';
 import 'package:ucp2/ui/widgets/auth_text_field.dart';
-import 'package:ucp2/ui/widgets/password_strength.dart';
-
 import '../theme/app_theme.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -16,24 +13,53 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final _namaController = TextEditingController();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _agreeToTerms = false;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  void _register() {
+    if (_formKey.currentState!.validate()) {
+      if (!_agreeToTerms) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Please agree to Terms and Conditions'),
+            backgroundColor: AppTheme.errorColor,
+          ),
+        );
+        return;
+      }
+
+      context.read<AuthBloc>().add(
+            RegisterRequested(
+              nama: _nameController.text,
+              email: _emailController.text,
+              password: _passwordController.text,
+            ),
+          );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.neutralLight,
+      backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        backgroundColor: AppTheme.neutralLight,
-        elevation: 0,
+        title: Text('Create Account'),
         leading: IconButton(
-          onPressed: () => Navigator.of(
-            context,
-          ).pushReplacementNamed('/login'),
-          icon: Icon(Icons.arrow_back, color: AppTheme.primaryColor),
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: BlocListener<AuthBloc, AuthState>(
@@ -41,163 +67,200 @@ class _RegisterPageState extends State<RegisterPage> {
           if (state is RegisterSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Akun berhasil dibuat! Silahkan Login!'),
+                content: Text('Registration successful! Please login.'),
                 backgroundColor: AppTheme.successColor,
-                duration: Duration(seconds: 2),
               ),
             );
-            Future.delayed(Duration(seconds: 2), () {
-              Navigator.of(context).pushReplacementNamed('/login');
-            });
+            Navigator.of(context).pushReplacementNamed('/login');
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
                 backgroundColor: AppTheme.errorColor,
-                duration: Duration(seconds: 3),
               ),
             );
           }
         },
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(20, 12, 20, 30),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 24),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Header
                   Text(
-                    "Buat Akun Baru",
-                    style: TextStyle(
-                      color: AppTheme.primaryColor,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
+                    'Create Account',
+                    style: Theme.of(context).textTheme.displayMedium,
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Join us to explore amazing car rentals',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  SizedBox(height: 32),
+
+                  // Name Field
+                  AuthTextField(
+                    label: 'Full Name',
+                    hint: 'Enter your full name',
+                    controller: _nameController,
+                    prefixIcon: Icon(
+                      Icons.person_outline,
+                      color: AppTheme.textSecondary,
                     ),
-                  ),
-                  Text(
-                    'Daftar untuk mulai menyewa dengan DriveEase',
-                    style: TextStyle(color: Color(0xFF999999), fontSize: 16),
-                  ),
-                  SizedBox(height: 28),
-
-                  AuthTextField(
-                    label: 'Nama Lengkap',
-                    hintText: "Masukkan nama lengkap Anda",
-                    controller: _namaController,
-                    keyboardType: TextInputType.name,
-                    prefixIcon: Icons.person_outline,
                     validator: (value) {
-                      if (value == null || value.isEmpty)
-                        return "Nama harus diisi";
-                      if (value.length < 3) return "Nama minimal 3 karakter";
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 18),
-
-                  AuthTextField(
-                    label: 'Email',
-                    hintText: "Masukkan Email Anda",
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    prefixIcon: Icons.email_outlined,
-                    validator: (value) {
-                      if (value == null || value.isEmpty)
-                        return "Email harus diisi";
-                      if (!RegExp(
-                        r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
-                      ).hasMatch(value)) {
-                        return "Format email tidak valid";
+                      if (value?.isEmpty ?? true) {
+                        return 'Name is required';
                       }
                       return null;
                     },
                   ),
-                  SizedBox(height: 18),
+                  SizedBox(height: 16),
 
+                  // Email Field
                   AuthTextField(
-                    label: "Password",
-                    hintText: "Masukkan password",
-                    controller: _passwordController,
-                    isPassword: true,
-                    prefixIcon: Icons.lock_outline,
-                    onChanged: (value) => setState(() {}),
+                    label: 'Email',
+                    hint: 'Enter your email',
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    prefixIcon: Icon(
+                      Icons.email_outlined,
+                      color: AppTheme.textSecondary,
+                    ),
                     validator: (value) {
-                      if (value == null || value.isEmpty)
-                        return "Password harus diisi";
-                      if (value.length < 8)
-                        return "Password minimal 8 karakter";
+                      if (value?.isEmpty ?? true) {
+                        return 'Email is required';
+                      }
+                      if (!value!.contains('@')) {
+                        return 'Enter a valid email';
+                      }
                       return null;
                     },
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 16),
 
-                  PasswordStrengthIndicator(password: _passwordController.text),
-                  SizedBox(height: 10),
-
+                  // Password Field
                   AuthTextField(
-                    label: "Konfirmasi Password",
-                    hintText: "Masukkan ulang password",
-                    controller: _confirmPasswordController,
+                    label: 'Password',
+                    hint: 'Enter your password',
+                    controller: _passwordController,
                     isPassword: true,
-                    prefixIcon: Icons.lock_outline,
+                    prefixIcon: Icon(
+                      Icons.lock_outline,
+                      color: AppTheme.textSecondary,
+                    ),
                     validator: (value) {
-                      if (value == null || value.isEmpty)
-                        return "Mohon masukkan ulang password Anda!";
-                      if (value != _passwordController.text)
-                        return "Password tidak sesuai";
+                      if (value?.isEmpty ?? true) {
+                        return 'Password is required';
+                      }
+                      if (value!.length < 6) {
+                        return 'Password must be at least 6 characters';
+                      }
                       return null;
                     },
+                  ),
+                  SizedBox(height: 16),
+
+                  // Confirm Password Field
+                  AuthTextField(
+                    label: 'Confirm Password',
+                    hint: 'Confirm your password',
+                    controller: _confirmPasswordController,
+                    isPassword: true,
+                    prefixIcon: Icon(
+                      Icons.lock_outline,
+                      color: AppTheme.textSecondary,
+                    ),
+                    validator: (value) {
+                      if (value?.isEmpty ?? true) {
+                        return 'Please confirm your password';
+                      }
+                      if (value != _passwordController.text) {
+                        return 'Passwords do not match';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 16),
+
+                  // Terms Checkbox
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: _agreeToTerms,
+                        onChanged: (value) {
+                          setState(() => _agreeToTerms = value ?? false);
+                        },
+                        activeColor: AppTheme.primaryColor,
+                      ),
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            text: 'I agree to ',
+                            style: TextStyle(
+                              fontFamily: 'Mont',
+                              fontSize: 12,
+                              color: AppTheme.textSecondary,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: 'Terms and Conditions',
+                                style: TextStyle(
+                                  fontFamily: 'Mont',
+                                  fontWeight: FontWeight.w600,
+                                  color: AppTheme.primaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 24),
 
+                  // Register Button
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
+                      bool isLoading = state is AuthLoading;
                       return AuthButton(
-                        label: 'Daftar',
-                        isLoading: state is AuthLoading,
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            context.read<AuthBloc>().add(
-                              RegisterRequested(
-                                nama: _namaController.text.trim(),
-                                email: _emailController.text.trim(),
-                                password: _passwordController.text,
-                              ),
-                            );
-                          }
-                        },
+                        label: 'Create Account',
+                        onPressed: _register,
+                        isLoading: isLoading,
                       );
                     },
                   ),
-                  SizedBox(height: 18),
+                  SizedBox(height: 20),
 
-                  Center(
-                    child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Sudah punya akun?',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Color(0xFF666666),
-                            ),
-                          ),
-                          TextSpan(
-                            text: ' Login di sini',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: AppTheme.secondaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () => Navigator.of(
-                                context,
-                              ).pushReplacementNamed('/login'),
-                          ),
-                        ],
+                  // Sign In Link
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Already have an account? ",
+                        style: TextStyle(
+                          fontFamily: 'Mont',
+                          fontSize: 14,
+                          color: AppTheme.textSecondary,
+                        ),
                       ),
-                    ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushReplacementNamed('/login');
+                        },
+                        child: Text(
+                          'Sign In',
+                          style: TextStyle(
+                            fontFamily: 'Mont',
+                            fontSize: 14,
+                            color: AppTheme.secondaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -206,14 +269,5 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _namaController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    super.dispose();
   }
 }
