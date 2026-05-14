@@ -13,6 +13,8 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  int _currentIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -85,7 +87,7 @@ class _HomepageState extends State<Homepage> {
                               style: TextStyle(
                                 fontFamily: 'Mont',
                                 fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w700,
                                 color: AppTheme.surfaceColor,
                               ),
                             ),
@@ -133,9 +135,10 @@ class _HomepageState extends State<Homepage> {
                         child: Text(
                           'View All',
                           style: TextStyle(
+                            fontFamily: 'Mont',
                             fontSize: 14,
                             color: AppTheme.secondaryColor,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ),
@@ -205,7 +208,25 @@ class _HomepageState extends State<Homepage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: 0,
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+          
+          if (index == 0) {
+            // Home - stay on current page
+          } else if (index == 1) {
+            // Katalog
+            Navigator.of(context).pushNamed('/katalog');
+          } else if (index == 2) {
+            // Kategori
+            Navigator.of(context).pushNamed('/kategori');
+          } else if (index == 3) {
+            // Profile (optional - logout)
+            context.read<AuthBloc>().add(LogoutRequested());
+          }
+        },
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -213,11 +234,11 @@ class _HomepageState extends State<Homepage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.car_rental),
-            label: 'Browse',
+            label: 'Katalog',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favorites',
+            icon: Icon(Icons.category),
+            label: 'Kategori',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
