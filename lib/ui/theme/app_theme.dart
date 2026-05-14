@@ -50,17 +50,46 @@ class AppTheme {
           fontSize: 28,
           fontWeight: FontWeight.w700,
           color: textPrimary,
-          
+        ),
+        displaySmall: TextStyle(
+          fontFamily: 'Mont',
+          fontSize: 24,
+          fontWeight: FontWeight.w700,
+          color: textPrimary,
+        ),
+        headlineLarge: TextStyle(
+          fontFamily: 'Mont',
+          fontSize: 22,
+          fontWeight: FontWeight.w700,
+          color: textPrimary,
+        ),
+        headlineMedium: TextStyle(
+          fontFamily: 'Mont',
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          color: textPrimary,
         ),
         headlineSmall: TextStyle(
           fontFamily: 'Mont',
-          fontSize: 20,
+          fontSize: 18,
           fontWeight: FontWeight.w700,
           color: textPrimary,
         ),
         titleLarge: TextStyle(
           fontFamily: 'Mont',
           fontSize: 18,
+          fontWeight: FontWeight.w700,
+          color: textPrimary,
+        ),
+        titleMedium: TextStyle(
+          fontFamily: 'Mont',
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          color: textPrimary,
+        ),
+        titleSmall: TextStyle(
+          fontFamily: 'Mont',
+          fontSize: 14,
           fontWeight: FontWeight.w700,
           color: textPrimary,
         ),
@@ -77,6 +106,24 @@ class AppTheme {
           color: textSecondary,
         ),
         bodySmall: TextStyle(
+          fontFamily: 'Mont',
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+          color: textSecondary,
+        ),
+        labelLarge: TextStyle(
+          fontFamily: 'Mont',
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          color: surfaceColor,
+        ),
+        labelMedium: TextStyle(
+          fontFamily: 'Mont',
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
+          color: textPrimary,
+        ),
+        labelSmall: TextStyle(
           fontFamily: 'Mont',
           fontSize: 12,
           fontWeight: FontWeight.w400,
@@ -108,6 +155,12 @@ class AppTheme {
           color: Color(0xFF7A7A7A),
           fontSize: 14,
           fontWeight: FontWeight.w400,
+        ),
+        labelStyle: TextStyle(
+          fontFamily: 'Mont',
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: textSecondary,
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
