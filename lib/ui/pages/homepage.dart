@@ -241,8 +241,8 @@ class _HomepageState extends State<Homepage> {
             label: 'Kategori',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profil',
+            icon: Icon(Icons.logout),
+            label: 'Keluar',
           ),
         ],
       ),
