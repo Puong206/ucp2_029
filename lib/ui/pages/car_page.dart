@@ -66,7 +66,7 @@ class _CarPageState extends State<CarPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Feature Highlights',
+            'Sorotan Fitur',
             style: Theme.of(context).textTheme.titleLarge,
           ),
           SizedBox(height: 16),
@@ -79,13 +79,13 @@ class _CarPageState extends State<CarPage> {
             children: [
               FeatureHighlight(
                 icon: Icons.speed,
-                label: 'Speed',
+                label: 'Kecepatan',
                 value: '180 km/h',
               ),
               FeatureHighlight(
                 icon: Icons.local_gas_station,
-                label: 'Fuel',
-                value: 'Petrol',
+                label: 'Bahan Bakar',
+                value: 'Bensin',
               ),
               FeatureHighlight(
                 icon: Icons.speed,
@@ -101,12 +101,12 @@ class _CarPageState extends State<CarPage> {
           ),
           SizedBox(height: 24),
           Text(
-            'Description',
+            'Deskripsi',
             style: Theme.of(context).textTheme.titleLarge,
           ),
           SizedBox(height: 12),
           Text(
-            'Luxury sedan with premium features and comfort. Perfect for business trips and long journeys.',
+            'Sedan mewah dengan fitur premium dan kenyamanan. Sempurna untuk perjalanan bisnis dan perjalanan jauh.',
             style: TextStyle(
               fontFamily: 'Mont',
               fontSize: 14,
@@ -125,7 +125,7 @@ class _CarPageState extends State<CarPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _specRow('Brand', widget.katalog.brand),
+          _specRow('Merek', widget.katalog.brand),
           _specRow('Model', widget.katalog.model),
           _specRow('Tahun', widget.katalog.year.toString()),
           _specRow('Transmisi', widget.katalog.transmisi),
@@ -143,7 +143,7 @@ class _CarPageState extends State<CarPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Customer Reviews',
+            'Ulasan Pelanggan',
             style: Theme.of(context).textTheme.titleLarge,
           ),
           SizedBox(height: 16),
@@ -184,7 +184,7 @@ class _CarPageState extends State<CarPage> {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Great car! Clean, comfortable, and well-maintained. Highly recommended!',
+                  'Mobil yang luar biasa! Bersih, nyaman, dan terawat dengan baik. Sangat direkomendasikan!',
                   style: TextStyle(
                     fontFamily: 'Mont',
                     fontSize: 14,
@@ -371,11 +371,11 @@ class _CarPageState extends State<CarPage> {
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
                     children: [
-                      _buildTab('Overview', 0),
+                      _buildTab('Ulasan', 0),
                       SizedBox(width: 16),
-                      _buildTab('Specs', 1),
+                      _buildTab('Spesifikasi', 1),
                       SizedBox(width: 16),
-                      _buildTab('Reviews', 2),
+                      _buildTab('Komentar', 2),
                     ],
                   ),
                 ),
@@ -392,7 +392,7 @@ class _CarPageState extends State<CarPage> {
                   child: Column(
                     children: [
                       AuthButton(
-                        label: 'Book Now',
+                        label: 'Pesan Sekarang',
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -405,7 +405,7 @@ class _CarPageState extends State<CarPage> {
                       ),
                       SizedBox(height: 12),
                       AuthButton(
-                        label: 'Contact Support',
+                        label: 'Hubungi Dukungan',
                         isOutlined: true,
                         onPressed: () {},
                       ),

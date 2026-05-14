@@ -83,7 +83,7 @@ class _HomepageState extends State<Homepage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Browse Categories',
+                              'Jelajahi Kategori',
                               style: TextStyle(
                                 fontFamily: 'Mont',
                                 fontSize: 16,
@@ -93,7 +93,7 @@ class _HomepageState extends State<Homepage> {
                             ),
                             SizedBox(height: 4),
                             Text(
-                              'Explore our wide selection',
+                              'Pilih dari berbagai pilihan kendaraan',
                               style: TextStyle(
                                 fontFamily: 'Mont',
                                 fontSize: 12,
@@ -112,7 +112,7 @@ class _HomepageState extends State<Homepage> {
                           backgroundColor: AppTheme.secondaryColor,
                           foregroundColor: AppTheme.primaryColor,
                         ),
-                        child: Text('Explore'),
+                        child: Text('Jelajahi'),
                       ),
                     ],
                   ),
@@ -125,7 +125,7 @@ class _HomepageState extends State<Homepage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Featured Cars',
+                        'Mobil Unggulan',
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       GestureDetector(
@@ -133,7 +133,7 @@ class _HomepageState extends State<Homepage> {
                           Navigator.of(context).pushNamed('/katalog');
                         },
                         child: Text(
-                          'View All',
+                          'Lihat Semua',
                           style: TextStyle(
                             fontFamily: 'Mont',
                             fontSize: 14,
@@ -230,7 +230,7 @@ class _HomepageState extends State<Homepage> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Beranda',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.car_rental),
@@ -242,7 +242,7 @@ class _HomepageState extends State<Homepage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profile',
+            label: 'Profil',
           ),
         ],
       ),

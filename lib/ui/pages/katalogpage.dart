@@ -64,7 +64,7 @@ class _KatalogPageState extends State<KatalogPage> {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        title: Text('Browse Cars'),
+        title: Text('Jelajahi Mobil'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -81,7 +81,7 @@ class _KatalogPageState extends State<KatalogPage> {
                 setState(() => _searchQuery = value);
               },
               decoration: InputDecoration(
-                hintText: 'Search cars...',
+                hintText: 'Cari mobil...',
                 prefixIcon: Icon(Icons.search, color: AppTheme.textSecondary),
                 suffixIcon: _searchQuery.isNotEmpty
                     ? IconButton(
@@ -102,7 +102,7 @@ class _KatalogPageState extends State<KatalogPage> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
-                _buildFilterChip('All', 'All'),
+                _buildFilterChip('Semua', 'All'),
                 SizedBox(width: 8),
                 _buildFilterChip('SUV', 'SUV'),
                 SizedBox(width: 8),
@@ -149,12 +149,12 @@ class _KatalogPageState extends State<KatalogPage> {
                           ),
                           SizedBox(height: 16),
                           Text(
-                            'No cars found',
+                            'Tidak ada mobil ditemukan',
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                           SizedBox(height: 8),
                           Text(
-                            'Try adjusting your search',
+                            'Coba sesuaikan pencarian Anda',
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ],
@@ -207,7 +207,7 @@ class _KatalogPageState extends State<KatalogPage> {
                         ),
                         SizedBox(height: 16),
                         Text(
-                          'Error',
+                          'Kesalahan',
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         SizedBox(height: 8),
@@ -223,7 +223,7 @@ class _KatalogPageState extends State<KatalogPage> {
                                 .read<KatalogBloc>()
                                 .add(FetchKatalog());
                           },
-                          child: Text('Retry'),
+                          child: Text('Coba Lagi'),
                         ),
                       ],
                     ),
@@ -259,7 +259,7 @@ class _KatalogPageState extends State<KatalogPage> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Beranda',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.car_rental),
@@ -271,7 +271,7 @@ class _KatalogPageState extends State<KatalogPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profile',
+            label: 'Profil',
           ),
         ],
       ),

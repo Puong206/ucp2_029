@@ -94,7 +94,7 @@ class _KategoriPageState extends State<KategoriPage> {
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
-        title: Text('Categories'),
+        title: Text('Kategori'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -111,12 +111,12 @@ class _KategoriPageState extends State<KategoriPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Browse by Category',
+                    'Jelajahi Berdasarkan Kategori',
                     style: Theme.of(context).textTheme.displaySmall,
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Choose your preferred type of vehicle',
+                    'Pilih tipe kendaraan yang Anda inginkan',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
@@ -156,15 +156,15 @@ class _KategoriPageState extends State<KategoriPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Popular Selections',
+                    'Pilihan Populer',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   SizedBox(height: 16),
-                  _buildPopularItem('Budget Friendly', '8-15K per day'),
+                  _buildPopularItem('Hemat', '8-15K per hari'),
                   SizedBox(height: 12),
-                  _buildPopularItem('Luxury', '30K+ per day'),
+                  _buildPopularItem('Mewah', '30K+ per hari'),
                   SizedBox(height: 12),
-                  _buildPopularItem('Family Oriented', '15-25K per day'),
+                  _buildPopularItem('Keluarga', '15-25K per hari'),
                 ],
               ),
             ),
@@ -196,7 +196,7 @@ class _KategoriPageState extends State<KategoriPage> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Beranda',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.car_rental),
@@ -208,7 +208,7 @@ class _KategoriPageState extends State<KategoriPage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profile',
+            label: 'Profil',
           ),
         ],
       ),

@@ -76,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                   // Email Field
                   AuthTextField(
                     label: 'Email',
-                    hint: 'Enter your email',
+                    hint: 'Masukkan email Anda',
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     prefixIcon: Icon(
@@ -85,10 +85,10 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
-                        return 'Email is required';
+                        return 'Email diperlukan';
                       }
                       if (!value!.contains('@')) {
-                        return 'Enter a valid email';
+                        return 'Masukkan email yang valid';
                       }
                       return null;
                     },
@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                   // Password Field
                   AuthTextField(
                     label: 'Password',
-                    hint: 'Enter your password',
+                    hint: 'Masukkan password Anda',
                     controller: _passwordController,
                     isPassword: true,
                     prefixIcon: Icon(
@@ -107,10 +107,10 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     validator: (value) {
                       if (value?.isEmpty ?? true) {
-                        return 'Password is required';
+                        return 'Password diperlukan';
                       }
                       if (value!.length < 6) {
-                        return 'Password must be at least 6 characters';
+                        return 'Password harus minimal 6 karakter';
                       }
                       return null;
                     },
@@ -131,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                             activeColor: AppTheme.primaryColor,
                           ),
                           Text(
-                            'Remember me',
+                            'Ingat saya',
                             style: TextStyle(
                               fontFamily: 'Mont',
                               fontSize: 14,
@@ -143,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                       TextButton(
                         onPressed: () {},
                         child: Text(
-                          'Forgot Password?',
+                          'Lupa Password?',
                           style: TextStyle(
                             fontFamily: 'Mont',
                             fontSize: 14,
@@ -161,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                     builder: (context, state) {
                       bool isLoading = state is AuthLoading;
                       return AuthButton(
-                        label: 'Sign In',
+                        label: 'Masuk',
                         onPressed: _login,
                         isLoading: isLoading,
                       );
@@ -176,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
-                          'OR',
+                        'ATAU',
                           style: TextStyle(
                             fontFamily: 'Mont',
                             fontSize: 12,
