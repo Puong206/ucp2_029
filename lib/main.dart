@@ -4,8 +4,10 @@ import 'package:ucp2/logic/bloc/auth/auth_bloc.dart';
 import 'package:ucp2/logic/bloc/auth/auth_event.dart';
 import 'package:ucp2/logic/bloc/auth/auth_state.dart';
 import 'package:ucp2/logic/bloc/katalog/katalog_bloc.dart';
+import 'package:ucp2/logic/bloc/kategori/kategori_bloc.dart';
 import 'package:ucp2/data/repositories/auth_repository.dart';
 import 'package:ucp2/data/repositories/katalog_repository.dart';
+import 'package:ucp2/data/repositories/kategori_repository.dart';
 import 'package:ucp2/ui/pages/homepage.dart';
 import 'package:ucp2/ui/pages/katalogpage.dart';
 import 'package:ucp2/ui/pages/katalog_form_page.dart';
@@ -31,6 +33,10 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => KatalogBloc(repository: KatalogRepository()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              KategoriBloc(repository: KategoriRepository()),
         ),
       ],
       child: MaterialApp(
