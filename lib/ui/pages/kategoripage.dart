@@ -187,7 +187,6 @@ class _KategoriPageState extends State<KategoriPage> {
             Navigator.of(context).pushNamed('/katalog');
           } else if (index == 2) {
             // Kategori
-            Navigator.of(context).pushNamed('/kategori');
           } else if (index == 3) {
             // Profile (optional - logout)
             context.read<AuthBloc>().add(LogoutRequested());
