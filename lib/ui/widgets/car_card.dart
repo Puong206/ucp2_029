@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ucp2/ui/theme/app_theme.dart';
 
-class CarCard extends StatelessWidget{
+class CarCard extends StatelessWidget {
   final String brand;
   final String model;
   final int year;
@@ -12,8 +12,10 @@ class CarCard extends StatelessWidget{
   final bool isFavorite;
   final VoidCallback? onTap;
   final VoidCallback? onFavoriteTap;
+  final String _baseServerUrl = "http://192.168.10.130:3000"; // Update dengan IP machine Anda
 
   const CarCard({
+    super.key,
     required this.brand,
     required this.model,
     required this.year,
@@ -26,17 +28,31 @@ class CarCard extends StatelessWidget{
     this.onFavoriteTap,
   });
 
+  // Resolve image URL - handle relative path atau full URL
+  String _resolveImageUrl(String? imageUrl) {
+    if (imageUrl == null || imageUrl.isEmpty) return '';
+    if (imageUrl.startsWith('http')) return imageUrl; // Already full URL
+    return '$_baseServerUrl$imageUrl'; // Prepend base URL untuk relative path
+  }
+
   Color _statusColor(String status) {
     switch (status) {
-      case 'tersedia': return Color(0xFF27AE60);
-      case 'tidak tersedia': return Color(0xFFE74C3C);
-      case 'perbaikan': return Color(0xFFF39C12);
-      default: return Color(0xFF7A7A7A);
+      case 'tersedia':
+        return const Color(0xFF27AE60);
+      case 'tidak tersedia':
+        return const Color(0xFFE74C3C);
+      case 'perbaikan':
+        return const Color(0xFFF39C12);
+      default:
+        return const Color(0xFF7A7A7A);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    // Debug: Print image URL
+    print('CarCard - brand: $brand, imageUrl: $imageUrl, resolved: ${_resolveImageUrl(imageUrl)}');
+    
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -47,139 +63,123 @@ class CarCard extends StatelessWidget{
             BoxShadow(
               color: Colors.black.withOpacity(0.08),
               blurRadius: 12,
-              offset: Offset(0, 4),
+              offset: const Offset(0, 4),
             ),
           ],
         ),
+        // Column + Expanded agar konten tidak overflow
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image Section with Favorite Button
-            Stack(
-              children: [
-                Container(
-                  height: 160,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.vertical(
+            // ── Image Section ─────────────────────────────
+            Expanded(
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  // Image container (pakai Expanded, tidak fixed height)
+                  ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
                       top: Radius.circular(16),
                     ),
-                    color: Color(0xFFF5F5F5),
-                  ),
-                  child: imageUrl != null && imageUrl!.isNotEmpty
-                      ? Image.network(
-                          imageUrl!,
-                          fit: BoxFit.cover,
-                        )
-                      : Center(
-                          child: Icon(
-                            Icons.directions_car,
-                            size: 48,
-                            color: AppTheme.textTertiary,
-                          ),
-                        ),
-                ),
-                Positioned(
-                  top: 12,
-                  right: 12,
-                  child: GestureDetector(
-                    onTap: onFavoriteTap,
                     child: Container(
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(
-                        color: AppTheme.surfaceColor,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 8,
-                          ),
-                        ],
-                      ),
-                      child: Icon(
-                        isFavorite ? Icons.favorite : Icons.favorite_border,
-                        color: isFavorite
-                            ? AppTheme.accentColor
-                            : AppTheme.textSecondary,
-                        size: 18,
-                      ),
+                      color: const Color(0xFFF0F0F5),
+                      child: _resolveImageUrl(imageUrl).isNotEmpty
+                          ? Image.network(
+                              _resolveImageUrl(imageUrl),
+                              fit: BoxFit.cover,
+                              loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes != null
+                                        ? loadingProgress.cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                    color: AppTheme.secondaryColor,
+                                  ),
+                                );
+                              },
+                              errorBuilder: (context, error, stackTrace) {
+                                print('Image load error for $brand: $error');
+                                return _carPlaceholder();
+                              },
+                            )
+                          : _carPlaceholder(),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            // Details Section
+
+            // ── Details Section ──────────────────────────
             Padding(
-              padding: EdgeInsets.all(12),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
+                  // Brand + Model
                   Text(
                     '$brand $model',
-                    // brand model dari tabel katalog
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'Mont',
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: FontWeight.w700,
                       color: AppTheme.textPrimary,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 2),
+                  // Year
                   Text(
                     year.toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'Mont',
-                      fontSize: 12,
+                      fontSize: 11,
                       color: AppTheme.textTertiary,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 6),
+                  // Transmisi & Kapasitas
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.settings,
-                            size: 14,
+                      const Icon(Icons.settings_outlined,
+                          size: 12, color: AppTheme.textTertiary),
+                      const SizedBox(width: 3),
+                      Flexible(
+                        child: Text(
+                          transmisi,
+                          style: const TextStyle(
+                            fontFamily: 'Mont',
+                            fontSize: 10,
                             color: AppTheme.textTertiary,
                           ),
-                          SizedBox(width: 4),
-                          Text(
-                            transmisi,
-                            style: TextStyle(
-                              fontFamily: 'Mont',
-                              fontSize: 11,
-                              color: AppTheme.textTertiary,
-                            ),
-                          ),
-                        ],
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.speed,
-                            size: 14,
+                      const SizedBox(width: 8),
+                      const Icon(Icons.speed_outlined,
+                          size: 12, color: AppTheme.textTertiary),
+                      const SizedBox(width: 3),
+                      Flexible(
+                        child: Text(
+                          '$kapasitas cc',
+                          style: const TextStyle(
+                            fontFamily: 'Mont',
+                            fontSize: 10,
                             color: AppTheme.textTertiary,
                           ),
-                          SizedBox(width: 4),
-                          Text(
-                            '$kapasitas cc',
-                            style: TextStyle(
-                              fontFamily: 'Mont',
-                              fontSize: 11,
-                              color: AppTheme.textTertiary,
-                            ),
-                          ),
-                        ],
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 6),
+                  // Status badge
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 7, vertical: 3),
                     decoration: BoxDecoration(
                       color: _statusColor(status).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(6),
@@ -188,7 +188,7 @@ class CarCard extends StatelessWidget{
                       status,
                       style: TextStyle(
                         fontFamily: 'Mont',
-                        fontSize: 11,
+                        fontSize: 10,
                         fontWeight: FontWeight.w700,
                         color: _statusColor(status),
                       ),
@@ -199,6 +199,16 @@ class CarCard extends StatelessWidget{
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _carPlaceholder() {
+    return const Center(
+      child: Icon(
+        Icons.directions_car_outlined,
+        size: 40,
+        color: AppTheme.textTertiary,
       ),
     );
   }
