@@ -60,7 +60,7 @@ class _HomepageState extends State<Homepage> {
                         'Selamat Datang, $userName!',
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
-                      SizedBox(height: 8),
+                      SizedBox(height: 2),
                       Text(
                         'Temukan mobil impianmu dengan mudah',
                         style: Theme.of(context).textTheme.bodyMedium,
