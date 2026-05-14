@@ -9,7 +9,6 @@ part 'katalog_state.dart';
 class KatalogBloc extends Bloc<KatalogEvent, KatalogState> {
   final KatalogRepository repository;
 
-  // Cache semua data untuk keperluan search lokal
   List<KatalogModel> _allKatalog = [];
 
   KatalogBloc({required this.repository}) : super(KatalogInitial()) {
@@ -43,7 +42,7 @@ class KatalogBloc extends Bloc<KatalogEvent, KatalogState> {
     on<CreateKatalog>((event, emit) async {
       emit(KatalogLoading());
       try {
-        await repository.createKatalog(event.data);
+        await repository.createKatalog(event.data, imagePath: event.imagePath);
         emit(KatalogActionSuccess('Katalog berhasil ditambahkan'));
         add(FetchKatalog());
       } catch (e) {
@@ -54,7 +53,8 @@ class KatalogBloc extends Bloc<KatalogEvent, KatalogState> {
     on<UpdateKatalog>((event, emit) async {
       emit(KatalogLoading());
       try {
-        await repository.updateKatalog(event.id, event.data);
+        await repository.updateKatalog(event.id, event.data,
+            imagePath: event.imagePath);
         emit(KatalogActionSuccess('Katalog berhasil diperbarui'));
         add(FetchKatalog());
       } catch (e) {

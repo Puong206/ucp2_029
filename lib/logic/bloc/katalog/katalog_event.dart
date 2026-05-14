@@ -16,7 +16,8 @@ class SearchKatalog extends KatalogEvent {
 
 class CreateKatalog extends KatalogEvent {
   final Map<String, dynamic> data;
-  CreateKatalog({required this.data});
+  final String? imagePath; // path file gambar dari galeri (nullable)
+  CreateKatalog({required this.data, this.imagePath});
   @override
   List<Object> get props => [data];
 }
@@ -24,7 +25,8 @@ class CreateKatalog extends KatalogEvent {
 class UpdateKatalog extends KatalogEvent {
   final int id;
   final Map<String, dynamic> data;
-  UpdateKatalog({required this.id, required this.data});
+  final String? imagePath; // path file gambar dari galeri (nullable)
+  UpdateKatalog({required this.id, required this.data, this.imagePath});
   @override
   List<Object> get props => [id, data];
 }
