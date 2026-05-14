@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ucp2/logic/bloc/auth/auth_bloc.dart';
+import 'package:ucp2/logic/bloc/auth/auth_event.dart';
 import 'package:ucp2/logic/bloc/katalog/katalog_bloc.dart';
 import 'package:ucp2/ui/theme/app_theme.dart';
 import 'package:ucp2/ui/widgets/car_card.dart';
@@ -14,6 +16,8 @@ class _KatalogPageState extends State<KatalogPage> {
   String _selectedCategory = 'All';
   String _searchQuery = '';
   final _searchController = TextEditingController();
+
+  int _currentIndex = 1;
 
   @override
   void initState() {
@@ -45,6 +49,7 @@ class _KatalogPageState extends State<KatalogPage> {
         child: Text(
           label,
           style: TextStyle(
+            fontFamily: 'Mont',
             fontSize: 14,
             fontWeight: FontWeight.w500,
             color: isSelected ? AppTheme.surfaceColor : AppTheme.textPrimary,
@@ -228,6 +233,45 @@ class _KatalogPageState extends State<KatalogPage> {
                 return Container();
               },
             ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+          
+          if (index == 0) {
+            Navigator.of(context).pushNamed('/home');
+          } else if (index == 1) {
+            // Katalog
+          } else if (index == 2) {
+            // Kategori
+            Navigator.of(context).pushNamed('/kategori');
+          } else if (index == 3) {
+            // Profile (optional - logout)
+            context.read<AuthBloc>().add(LogoutRequested());
+          }
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.car_rental),
+            label: 'Katalog',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.category),
+            label: 'Kategori',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
           ),
         ],
       ),
