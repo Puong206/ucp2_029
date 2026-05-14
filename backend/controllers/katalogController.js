@@ -59,20 +59,21 @@ exports.getKatalogById = async (req, res) => {
 
 exports.createKatalog = async (req, res) => {
     try {
-        const { kategori_id, brand, model, year, harga_per_hari, image_url, status } = req.body;
+        const { kategori_id, brand, model, year, transmisi, kapasitas, image_url, status } = req.body;
 
-        if (!kategori_id || !brand || !model || !year || !harga_per_hari) {
+        if (!kategori_id || !brand || !model || !year || !transmisi || !kapasitas) {
             return res.status(400).json({
                 status: 'error',
-                message: 'Kategori, brand, model, year, dan harga_per_hari wajib diisi'
+                message: 'Kategori, brand, model, year, transmisi, dan kapasitas wajib diisi'
             });
         }
 
-        const currentStatus = status || 'Tersedia';
+        const validStatus = ['tersedia', 'tidak tersedia', 'perbaikan'];
+        const currentStatus = validStatus.includes(status) ? status : 'tersedia';
 
         const [result] = await db.query(
-            'INSERT INTO katalog (kategori_id, brand, model, year, harga_per_hari, image_url, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            [kategori_id, brand, model, year || null, harga_per_hari, image_url || null, currentStatus]
+            'INSERT INTO katalog (kategori_id, brand, model, year, transmisi, kapasitas, image_url, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            [kategori_id, brand, model, year, transmisi, kapasitas, image_url || null, currentStatus]
         );
 
         res.status(201).json({
@@ -84,8 +85,9 @@ exports.createKatalog = async (req, res) => {
                 brand,
                 model,
                 year,
-                harga_per_hari,
-                image_url,
+                transmisi,
+                kapasitas,
+                image_url: image_url || null,
                 status: currentStatus
             }
         });
@@ -102,18 +104,21 @@ exports.createKatalog = async (req, res) => {
 exports.updateKatalog = async (req, res) => {
     try {
         const { id } = req.params;
-        const { kategori_id, brand, model, year, harga_per_hari, image_url, status } = req.body;
+        const { kategori_id, brand, model, year, transmisi, kapasitas, image_url, status } = req.body;
 
-        if (!kategori_id || !brand || !model || !harga_per_hari) {
+        if (!kategori_id || !brand || !model || !year || !transmisi || !kapasitas) {
             return res.status(400).json({
                 status: 'error',
-                message: 'kategori_id, brand, model, dan harga_per_hari wajib diisi!'
+                message: 'kategori_id, brand, model, year, transmisi, dan kapasitas wajib diisi!'
             });
         }
 
+        const validStatus = ['tersedia', 'tidak tersedia', 'perbaikan'];
+        const currentStatus = validStatus.includes(status) ? status : 'tersedia';
+
         const [result] = await db.query(
-            'UPDATE katalog SET kategori_id=?, brand=?, model=?, year=?, harga_per_hari=?, image_url=?, status=? WHERE id=?',
-            [kategori_id, brand, model, year || null, harga_per_hari, image_url || null, status || 'Tersedia', id]
+            'UPDATE katalog SET kategori_id=?, brand=?, model=?, year=?, transmisi=?, kapasitas=?, image_url=?, status=? WHERE id=?',
+            [kategori_id, brand, model, year, transmisi, kapasitas, image_url || null, currentStatus, id]
         );
 
         if (result.affectedRows === 0) {
