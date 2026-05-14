@@ -4,7 +4,7 @@ import 'package:ucp2/data/models/katalog_model.dart';
 import '../providers/storage_provider.dart';
 
 class KatalogRepository {
-  final String _baseUrl = "http://localhost:3000/api";
+  final String _baseUrl = "http://10.0.2.2:3000/api";
   final StorageProvider storage = StorageProvider();
 
   Future<List<KatalogModel>> getAllKatalog() async {

@@ -5,8 +5,8 @@ import 'package:ucp2/data/models/user_model.dart';
 import 'package:ucp2/data/providers/storage_provider.dart';
 
 class AuthRepository {
-  // Match dengan backend di http://localhost:3000/api
-  final String baseUrl = "http://localhost:3000/api";
+  // Match dengan backend di http://10.0.2.2:3000/api (10.0.2.2 untuk Android emulator)
+  final String baseUrl = "http://10.0.2.2:3000/api";
   final StorageProvider _storage = StorageProvider();
 
   // ============ Token Management ============
