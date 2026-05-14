@@ -169,55 +169,12 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 24),
 
-                  // Divider
-                  Row(
-                    children: [
-                      Expanded(child: Divider(color: AppTheme.borderColor)),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(
-                        'ATAU',
-                          style: TextStyle(
-                            fontFamily: 'Mont',
-                            fontSize: 12,
-                            color: AppTheme.textTertiary,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                      Expanded(child: Divider(color: AppTheme.borderColor)),
-                    ],
-                  ),
-                  SizedBox(height: 24),
-
-                  // Social Buttons
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () {},
-                          icon: Icon(Icons.g_mobiledata, size: 20),
-                          label: Text('Google'),
-                        ),
-                      ),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () {},
-                          icon: Icon(Icons.facebook, size: 20),
-                          label: Text('Facebook'),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 24),
-
                   // Sign Up Link
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Don't have an account? ",
+                        "Tidak punya akun? ",
                         style: TextStyle(
                           fontFamily: 'Mont',
                           fontSize: 14,
@@ -229,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.of(context).pushNamed('/register');
                         },
                         child: Text(
-                          'Sign Up',
+                          'Daftar',
                           style: TextStyle(
                             fontFamily: 'Mont',
                             fontSize: 14,

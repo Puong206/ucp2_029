@@ -34,7 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
       if (!_agreeToTerms) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Please agree to Terms and Conditions'),
+            content: Text('Setuju dengan Terms and Conditions'),
             backgroundColor: AppTheme.errorColor,
           ),
         );
@@ -67,7 +67,7 @@ class _RegisterPageState extends State<RegisterPage> {
           if (state is RegisterSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Registration successful! Please login.'),
+                content: Text('Pendaftaran berhasil! Silakan login.'),
                 backgroundColor: AppTheme.successColor,
               ),
             );
@@ -91,12 +91,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: [
                   // Header
                   Text(
-                    'Create Account',
+                    'Buat Akun',
                     style: Theme.of(context).textTheme.displayMedium,
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Join us to explore amazing car rentals',
+                    'Bergabunglah dengan kami untuk mengeksplor penyewaan mobil yang luar biasa',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   SizedBox(height: 32),
