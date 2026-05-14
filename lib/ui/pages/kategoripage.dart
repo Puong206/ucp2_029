@@ -185,7 +185,7 @@ class _KategoriPageState extends State<KategoriPage> {
                                 if (isEdit) {
                                   context.read<KategoriBloc>().add(
                                         UpdateKategori(
-                                            id: kategori!.id, data: data),
+                                            id: kategori.id, data: data),
                                       );
                                 } else {
                                   context.read<KategoriBloc>().add(
