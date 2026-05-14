@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ucp2/data/models/katalog_model.dart';
+import 'package:ucp2/logic/bloc/auth/auth_bloc.dart';
+import 'package:ucp2/logic/bloc/auth/auth_event.dart';
 import 'package:ucp2/logic/bloc/katalog/katalog_bloc.dart';
 import 'package:ucp2/ui/theme/app_theme.dart';
 import 'package:ucp2/ui/widgets/car_card.dart';
@@ -14,6 +16,7 @@ class KatalogPage extends StatefulWidget {
 
 class _KatalogPageState extends State<KatalogPage> {
   final _searchController = TextEditingController();
+  final int _currentIndex = 1;
   String _searchQuery = '';
   String _selectedFilter = 'Semua';
 
@@ -311,6 +314,42 @@ class _KatalogPageState extends State<KatalogPage> {
             ],
           );
         },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _currentIndex,
+        selectedLabelStyle: const TextStyle(
+            fontFamily: 'Mont', fontWeight: FontWeight.w700, fontSize: 11),
+        unselectedLabelStyle:
+            const TextStyle(fontFamily: 'Mont', fontSize: 11),
+        selectedItemColor: AppTheme.primaryColor,
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.of(context).pushNamed('/home');
+          } else if (index == 2) {
+            Navigator.of(context).pushNamed('/kategori');
+          } else if (index == 3) {
+            context.read<AuthBloc>().add(LogoutRequested());
+          }
+        },
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              activeIcon: Icon(Icons.home),
+              label: 'Beranda'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.car_rental_outlined),
+              activeIcon: Icon(Icons.car_rental),
+              label: 'Katalog'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.category_outlined),
+              activeIcon: Icon(Icons.category),
+              label: 'Kategori'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.logout_outlined),
+              activeIcon: Icon(Icons.logout),
+              label: 'Keluar'),
+        ],
       ),
     );
   }
