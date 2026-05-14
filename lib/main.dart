@@ -8,16 +8,19 @@ import 'package:ucp2/data/repositories/auth_repository.dart';
 import 'package:ucp2/data/repositories/katalog_repository.dart';
 import 'package:ucp2/ui/pages/homepage.dart';
 import 'package:ucp2/ui/pages/katalogpage.dart';
+import 'package:ucp2/ui/pages/katalog_form_page.dart';
 import 'package:ucp2/ui/pages/kategoripage.dart';
 import 'package:ucp2/ui/pages/loginpage.dart';
 import 'package:ucp2/ui/pages/registerpage.dart';
 import 'package:ucp2/ui/theme/app_theme.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -32,6 +35,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'DriveEase',
+        debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         home: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
@@ -47,6 +51,10 @@ class MyApp extends StatelessWidget {
           '/register': (context) => RegisterPage(),
           '/home': (context) => Homepage(),
           '/katalog': (context) => KatalogPage(),
+          '/katalog/tambah': (context) => BlocProvider.value(
+                value: context.read<KatalogBloc>(),
+                child: const KatalogFormPage(),
+              ),
           '/kategori': (context) => KategoriPage(),
         },
       ),
