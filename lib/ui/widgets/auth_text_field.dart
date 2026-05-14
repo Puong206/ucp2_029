@@ -44,8 +44,9 @@ class _AuthTextFieldState extends State<AuthTextField> {
       children: [
         Text(
           widget.label,
-          style: TextStyle(
+          style: const TextStyle(
             fontFamily: 'Mont',
+            fontFamilyFallback: ['Roboto', 'Arial'],
             fontSize: 14,
             fontWeight: FontWeight.w700,
             color: AppTheme.textPrimary,
@@ -58,6 +59,13 @@ class _AuthTextFieldState extends State<AuthTextField> {
           obscureText: _obscureText,
           maxLines: _obscureText ? 1 : widget.maxLines,
           validator: widget.validator,
+          style: const TextStyle(
+            fontFamily: 'Mont',
+            fontFamilyFallback: ['Roboto', 'Arial'],
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: AppTheme.textPrimary,
+          ),
           decoration: InputDecoration(
             hintText: widget.hint,
             prefixIcon: widget.prefixIcon,
