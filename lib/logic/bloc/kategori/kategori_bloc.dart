@@ -8,9 +8,9 @@ part 'kategori_state.dart';
 
 class KategoriBloc extends Bloc<KategoriEvent, KategoriState> {
   final KategoriRepository repository;
-  
+
   KategoriBloc({required this.repository}) : super(KategoriInitial()) {
-    on<KategoriEvent>((event, emit) async{
+    on<FetchKategori>((event, emit) async {
       emit(KategoriLoading());
       try {
         final list = await repository.getAllKategori();
@@ -24,7 +24,7 @@ class KategoriBloc extends Bloc<KategoriEvent, KategoriState> {
       emit(KategoriLoading());
       try {
         await repository.createKategori(event.data);
-        emit(KategoriCreatedSuccess());
+        emit(const KategoriActionSuccess('Kategori berhasil ditambahkan'));
         add(FetchKategori());
       } catch (e) {
         emit(KategoriError(e.toString()));
@@ -35,18 +35,18 @@ class KategoriBloc extends Bloc<KategoriEvent, KategoriState> {
       emit(KategoriLoading());
       try {
         await repository.updateKategori(event.id, event.data);
-        emit(KategoriCreatedSuccess());
+        emit(const KategoriActionSuccess('Kategori berhasil diperbarui'));
         add(FetchKategori());
       } catch (e) {
         emit(KategoriError(e.toString()));
       }
     });
 
-    on<DeleteKategori>((event, emit) async{
+    on<DeleteKategori>((event, emit) async {
       emit(KategoriLoading());
       try {
         await repository.deleteKategori(event.id);
-        emit(KategoriCreatedSuccess());
+        emit(const KategoriActionSuccess('Kategori berhasil dihapus'));
         add(FetchKategori());
       } catch (e) {
         emit(KategoriError(e.toString()));

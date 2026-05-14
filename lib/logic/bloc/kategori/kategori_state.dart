@@ -2,7 +2,7 @@ part of 'kategori_bloc.dart';
 
 abstract class KategoriState extends Equatable {
   const KategoriState();
-  
+
   @override
   List<Object> get props => [];
 }
@@ -19,12 +19,23 @@ class KategoriLoaded extends KategoriState {
   List<Object> get props => [kategoriList];
 }
 
-class KategoriError extends KategoriState {
+class KategoriActionSuccess extends KategoriState {
   final String message;
-  const KategoriError(this.message);
-  
+  const KategoriActionSuccess(this.message);
+
   @override
   List<Object> get props => [message];
 }
 
-class KategoriCreatedSuccess extends KategoriState {}
+class KategoriError extends KategoriState {
+  final String message;
+  const KategoriError(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
+// Alias backward-compat
+class KategoriCreatedSuccess extends KategoriActionSuccess {
+  const KategoriCreatedSuccess() : super('Berhasil');
+}
