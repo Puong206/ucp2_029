@@ -8,15 +8,35 @@ part 'katalog_state.dart';
 
 class KatalogBloc extends Bloc<KatalogEvent, KatalogState> {
   final KatalogRepository repository;
-  
+
+  // Cache semua data untuk keperluan search lokal
+  List<KatalogModel> _allKatalog = [];
+
   KatalogBloc({required this.repository}) : super(KatalogInitial()) {
     on<FetchKatalog>((event, emit) async {
       emit(KatalogLoading());
       try {
         final list = await repository.getAllKatalog();
+        _allKatalog = list;
         emit(KatalogLoaded(list));
       } catch (e) {
         emit(KatalogError(e.toString()));
+      }
+    });
+
+    on<SearchKatalog>((event, emit) {
+      final query = event.query.toLowerCase().trim();
+      if (query.isEmpty) {
+        emit(KatalogLoaded(_allKatalog));
+      } else {
+        final filtered = _allKatalog.where((k) {
+          return k.brand.toLowerCase().contains(query) ||
+              k.model.toLowerCase().contains(query) ||
+              k.transmisi.toLowerCase().contains(query) ||
+              k.status.toLowerCase().contains(query) ||
+              (k.namaKategori?.toLowerCase().contains(query) ?? false);
+        }).toList();
+        emit(KatalogLoaded(_allKatalog, filtered: filtered));
       }
     });
 
@@ -24,7 +44,7 @@ class KatalogBloc extends Bloc<KatalogEvent, KatalogState> {
       emit(KatalogLoading());
       try {
         await repository.createKatalog(event.data);
-        emit(KatalogCreatedSuccess());
+        emit(KatalogActionSuccess('Katalog berhasil ditambahkan'));
         add(FetchKatalog());
       } catch (e) {
         emit(KatalogError(e.toString()));
@@ -35,17 +55,18 @@ class KatalogBloc extends Bloc<KatalogEvent, KatalogState> {
       emit(KatalogLoading());
       try {
         await repository.updateKatalog(event.id, event.data);
-        emit(KatalogCreatedSuccess());
+        emit(KatalogActionSuccess('Katalog berhasil diperbarui'));
         add(FetchKatalog());
       } catch (e) {
         emit(KatalogError(e.toString()));
       }
     });
-    on<DeleteKatalog>((event, emit) async{
+
+    on<DeleteKatalog>((event, emit) async {
       emit(KatalogLoading());
       try {
         await repository.deleteKatalog(event.id);
-        emit(KatalogCreatedSuccess());
+        emit(KatalogActionSuccess('Katalog berhasil dihapus'));
         add(FetchKatalog());
       } catch (e) {
         emit(KatalogError(e.toString()));

@@ -7,6 +7,13 @@ abstract class KatalogEvent extends Equatable {
 
 class FetchKatalog extends KatalogEvent {}
 
+class SearchKatalog extends KatalogEvent {
+  final String query;
+  SearchKatalog({required this.query});
+  @override
+  List<Object> get props => [query];
+}
+
 class CreateKatalog extends KatalogEvent {
   final Map<String, dynamic> data;
   CreateKatalog({required this.data});

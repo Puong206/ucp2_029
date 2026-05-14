@@ -11,18 +11,32 @@ class KatalogLoading extends KatalogState {}
 
 class KatalogLoaded extends KatalogState {
   final List<KatalogModel> katalogList;
-  KatalogLoaded(this.katalogList);
+  final List<KatalogModel> filteredList;
+
+  KatalogLoaded(this.katalogList, {List<KatalogModel>? filtered})
+      : filteredList = filtered ?? katalogList;
 
   @override
-  List<Object> get props => [katalogList];
+  List<Object> get props => [katalogList, filteredList];
+}
+
+class KatalogActionSuccess extends KatalogState {
+  final String message;
+  KatalogActionSuccess(this.message);
+
+  @override
+  List<Object> get props => [message];
 }
 
 class KatalogError extends KatalogState {
   final String message;
   KatalogError(this.message);
-  
+
   @override
   List<Object> get props => [message];
 }
 
-class KatalogCreatedSuccess extends KatalogState {}
+// Alias agar backward-compatible dengan kode lama
+class KatalogCreatedSuccess extends KatalogActionSuccess {
+  KatalogCreatedSuccess() : super('Berhasil');
+}
