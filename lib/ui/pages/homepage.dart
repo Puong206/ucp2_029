@@ -83,7 +83,7 @@ class _HomepageState extends State<Homepage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Jelajahi Kategori',
+                              'Jelajahi Katalog',
                               style: TextStyle(
                                 fontFamily: 'Mont',
                                 fontSize: 16,
@@ -106,7 +106,7 @@ class _HomepageState extends State<Homepage> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).pushNamed('/kategori');
+                          Navigator.of(context).pushNamed('/katalog');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppTheme.secondaryColor,
@@ -168,7 +168,7 @@ class _HomepageState extends State<Homepage> {
                           crossAxisCount: 2,
                           crossAxisSpacing: 12,
                           mainAxisSpacing: 12,
-                          childAspectRatio: 0.7,
+                          childAspectRatio: 0.62,
                         ),
                         itemCount:
                             state.katalogList.length > 4 ? 4 : state.katalogList.length,
@@ -209,39 +209,40 @@ class _HomepageState extends State<Homepage> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
+        selectedLabelStyle: const TextStyle(
+            fontFamily: 'Mont', fontWeight: FontWeight.w700, fontSize: 11),
+        unselectedLabelStyle:
+            const TextStyle(fontFamily: 'Mont', fontSize: 11),
+        selectedItemColor: AppTheme.primaryColor,
         onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-          
-          if (index == 0) {
-            // Home - stay on current page
-          } else if (index == 1) {
-            // Katalog
+          setState(() => _currentIndex = index);
+          if (index == 1) {
             Navigator.of(context).pushNamed('/katalog');
           } else if (index == 2) {
-            // Kategori
             Navigator.of(context).pushNamed('/kategori');
           } else if (index == 3) {
-            // Profile (optional - logout)
             context.read<AuthBloc>().add(LogoutRequested());
           }
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
             label: 'Beranda',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.car_rental),
+            icon: Icon(Icons.car_rental_outlined),
+            activeIcon: Icon(Icons.car_rental),
             label: 'Katalog',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.category),
+            icon: Icon(Icons.category_outlined),
+            activeIcon: Icon(Icons.category),
             label: 'Kategori',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.logout),
+            icon: Icon(Icons.logout_outlined),
+            activeIcon: Icon(Icons.logout),
             label: 'Keluar',
           ),
         ],
