@@ -28,6 +28,7 @@ class _CarPageState extends State<CarPage> {
           Text(
             label,
             style: TextStyle(
+              fontFamily: 'Mont',
               fontSize: 14,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
               color: isSelected ? AppTheme.primaryColor : AppTheme.textTertiary,
@@ -107,6 +108,7 @@ class _CarPageState extends State<CarPage> {
           Text(
             'Luxury sedan with premium features and comfort. Perfect for business trips and long journeys.',
             style: TextStyle(
+              fontFamily: 'Mont',
               fontSize: 14,
               color: AppTheme.textSecondary,
               height: 1.6,
@@ -162,8 +164,10 @@ class _CarPageState extends State<CarPage> {
                     Text(
                       'John Doe',
                       style: TextStyle(
+                        fontFamily: 'Mont',
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
+                        color: AppTheme.textPrimary,
                       ),
                     ),
                     Row(
@@ -182,6 +186,7 @@ class _CarPageState extends State<CarPage> {
                 Text(
                   'Great car! Clean, comfortable, and well-maintained. Highly recommended!',
                   style: TextStyle(
+                    fontFamily: 'Mont',
                     fontSize: 14,
                     color: AppTheme.textSecondary,
                     height: 1.5,
@@ -204,6 +209,7 @@ class _CarPageState extends State<CarPage> {
           Text(
             label,
             style: TextStyle(
+              fontFamily: 'Mont',
               fontSize: 14,
               color: AppTheme.textSecondary,
             ),
@@ -211,6 +217,7 @@ class _CarPageState extends State<CarPage> {
           Text(
             value,
             style: TextStyle(
+              fontFamily: 'Mont',
               fontSize: 14,
               fontWeight: FontWeight.w600,
               color: AppTheme.textPrimary,
@@ -323,6 +330,7 @@ class _CarPageState extends State<CarPage> {
                           Text(
                             '4.8 (320 reviews)',
                             style: TextStyle(
+                              fontFamily: 'Mont',
                               fontSize: 14,
                               color: AppTheme.textSecondary,
                             ),
@@ -343,8 +351,8 @@ class _CarPageState extends State<CarPage> {
                         child: Text(
                           widget.katalog.status,
                           style: TextStyle(
-                            fontFamily: 'MontBlanc',
-                            fontSize: 16,
+                            fontFamily: 'Mont',
+                            fontSize: 14,
                             fontWeight: FontWeight.w700,
                             color: widget.katalog.status == 'tersedia'
                                 ? Color(0xFF27AE60)
