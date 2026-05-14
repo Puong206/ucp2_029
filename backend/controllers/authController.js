@@ -63,7 +63,10 @@ exports.login = async (req, res) => {
             });
         }
 
+        console.log('Login attempt:', email);
         const [users] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+        console.log('Database query result:', users);
+        
         if (users.length === 0) {
             return res.status(401).json({
                 status: 'error',
@@ -101,6 +104,7 @@ exports.login = async (req, res) => {
         });
 
     } catch (error) {
+        console.error('Login error:', error);
         res.status(500).json({
             status: 'error',
             message: 'Terjadi kesalahan pada server'
