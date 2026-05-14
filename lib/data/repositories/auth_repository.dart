@@ -55,6 +55,11 @@ class AuthRepository {
           'email': email,
           'password': password,
         }),
+      ).timeout(
+        Duration(seconds: 30),
+        onTimeout: () {
+          throw Exception('Request timeout - Backend tidak merespons');
+        },
       );
 
       developer.log('Login Response: ${response.statusCode} - ${response.body}',
@@ -107,6 +112,11 @@ class AuthRepository {
           'email': email,
           'password': password,
         }),
+      ).timeout(
+        Duration(seconds: 30),
+        onTimeout: () {
+          throw Exception('Request timeout - Backend tidak merespons');
+        },
       );
 
       developer.log(

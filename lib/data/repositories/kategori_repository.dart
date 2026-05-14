@@ -17,6 +17,11 @@ class KategoriRepository {
         'Authorization': 'Bearer $token',
         'Accept': 'application/json',
       },
+    ).timeout(
+      Duration(seconds: 30),
+      onTimeout: () {
+        throw Exception('Request timeout - Backend tidak merespons');
+      },
     );
 
     if (response.statusCode == 200) {
@@ -39,6 +44,11 @@ class KategoriRepository {
         'Accept': 'application/json',
       },
       body: jsonEncode(data),
+    ).timeout(
+      Duration(seconds: 30),
+      onTimeout: () {
+        throw Exception('Request timeout - Backend tidak merespons');
+      },
     );
 
     if (response.statusCode != 201 && response.statusCode != 200) {
@@ -58,6 +68,11 @@ class KategoriRepository {
         'Accept': 'application/json',
       },
       body: jsonEncode(data),
+    ).timeout(
+      Duration(seconds: 30),
+      onTimeout: () {
+        throw Exception('Request timeout - Backend tidak merespons');
+      },
     );
 
     if (response.statusCode != 200) {
@@ -74,6 +89,11 @@ class KategoriRepository {
       headers: {
         'Authorization': 'Bearer $token',
         'Accept': 'application/json',
+      },
+    ).timeout(
+      Duration(seconds: 30),
+      onTimeout: () {
+        throw Exception('Request timeout - Backend tidak merespons');
       },
     );
 
