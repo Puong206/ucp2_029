@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ucp2/logic/bloc/auth/auth_bloc.dart';
+import 'package:ucp2/logic/bloc/auth/auth_event.dart';
 import 'package:ucp2/ui/theme/app_theme.dart';
 
-class KategoriPage extends StatelessWidget {
+class KategoriPage extends StatefulWidget {
+  @override
+  State<KategoriPage> createState() => _KategoriPageState();
+}
+
+class _KategoriPageState extends State<KategoriPage> {
+  int _currentIndex = 2;
+  
   final List<Map<String, dynamic>> categories = [
     {
       'name': 'SUV',
@@ -52,8 +62,9 @@ class KategoriPage extends StatelessWidget {
               Text(
                 title,
                 style: TextStyle(
+                  fontFamily: 'Mont',
                   fontSize: 14,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w700,
                   color: AppTheme.textPrimary,
                 ),
               ),
@@ -61,6 +72,7 @@ class KategoriPage extends StatelessWidget {
               Text(
                 description,
                 style: TextStyle(
+                  fontFamily: 'Mont',
                   fontSize: 12,
                   color: AppTheme.textTertiary,
                 ),
@@ -161,6 +173,45 @@ class KategoriPage extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+          
+          if (index == 0) {
+            Navigator.of(context).pushNamed('/home');
+          } else if (index == 1) {
+            Navigator.of(context).pushNamed('/katalog');
+          } else if (index == 2) {
+            // Kategori
+            Navigator.of(context).pushNamed('/kategori');
+          } else if (index == 3) {
+            // Profile (optional - logout)
+            context.read<AuthBloc>().add(LogoutRequested());
+          }
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.car_rental),
+            label: 'Katalog',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.category),
+            label: 'Kategori',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+      ),
     );
   }
 
@@ -209,8 +260,9 @@ class KategoriPage extends StatelessWidget {
             Text(
               name,
               style: TextStyle(
+                fontFamily: 'Mont',
                 fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
                 color: AppTheme.textPrimary,
               ),
               textAlign: TextAlign.center,
@@ -219,6 +271,7 @@ class KategoriPage extends StatelessWidget {
             Text(
               count,
               style: TextStyle(
+                fontFamily: 'Mont',
                 fontSize: 12,
                 color: AppTheme.textTertiary,
               ),
