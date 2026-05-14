@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:developer' as developer;
 import 'package:http/http.dart' as http;
 import 'package:mime/mime.dart';
 import 'package:ucp2/data/models/katalog_model.dart';
 import '../providers/storage_provider.dart';
 
 class KatalogRepository {
-  final String _baseUrl = "http://10.0.2.2:3000/api";
-  final String _baseServerUrl = "http://10.0.2.2:3000";
+  final String _baseUrl = "http://192.168.10.130:3000/api";
+  final String _baseServerUrl = "http://192.168.10.130:3000";
   final StorageProvider storage = StorageProvider();
 
   /// Resolve image URL — jika relative path (dari upload), prepend server URL
@@ -36,6 +37,14 @@ class KatalogRepository {
     if (response.statusCode == 200) {
       final Map<String, dynamic> body = jsonDecode(response.body);
       final List<dynamic> data = body['data'];
+      
+      // Debug: Print first katalog to check image_url
+      if (data.isNotEmpty) {
+        developer.log('First Katalog Response: ${data[0]}', name: 'KatalogRepo');
+        final katalog = KatalogModel.fromJson(data[0]);
+        developer.log('First Katalog Parsed - imageUrl: ${katalog.imageUrl}', name: 'KatalogRepo');
+      }
+      
       return data.map((item) => KatalogModel.fromJson(item)).toList();
     } else {
       throw Exception('Gagal memuat katalog: ${response.statusCode}');
