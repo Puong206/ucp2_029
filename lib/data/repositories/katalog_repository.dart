@@ -6,8 +6,8 @@ import 'package:ucp2/data/models/katalog_model.dart';
 import '../providers/storage_provider.dart';
 
 class KatalogRepository {
-  final String _baseUrl = "http://192.168.10.130:3000/api";
-  final String _baseServerUrl = "http://192.168.10.130:3000";
+  final String _baseUrl = "http://10.12.201.116:3000/api";
+  final String _baseServerUrl = "http://10.12.201.116:3000";
   final StorageProvider storage = StorageProvider();
 
   /// Resolve image URL — jika relative path (dari upload), prepend server URL

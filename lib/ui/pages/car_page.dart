@@ -12,7 +12,7 @@ class CarPage extends StatefulWidget {
 }
 
 class _CarPageState extends State<CarPage> {
-  final String _baseServerUrl = "http://192.168.10.130:3000"; // Update sesuai IP machine Anda
+  final String _baseServerUrl = "http://10.12.201.116:3000"; // Update sesuai IP machine Anda
 
   // Resolve image URL - handle relative path atau full URL
   String _resolveImageUrl(String? imageUrl) {

@@ -5,7 +5,7 @@ import 'package:ucp2/data/models/kategori_model.dart';
 import 'package:ucp2/data/providers/storage_provider.dart';
 
 class KategoriRepository {
-  final String baseUrl = 'http://192.168.10.130:3000/api';
+  final String baseUrl = 'http://10.12.201.116:3000/api';
   final StorageProvider storage = StorageProvider();
 
   Future<List<KategoriModel>> getAllKategori() async {

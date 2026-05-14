@@ -12,7 +12,7 @@ class CarCard extends StatelessWidget {
   final bool isFavorite;
   final VoidCallback? onTap;
   final VoidCallback? onFavoriteTap;
-  final String _baseServerUrl = "http://192.168.10.130:3000"; // Update dengan IP machine Anda
+  final String _baseServerUrl = "http://10.12.201.116:3000"; // Update dengan IP machine Anda
 
   const CarCard({
     super.key,
