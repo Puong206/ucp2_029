@@ -3,7 +3,9 @@ const db = require('../config/db');
 exports.getAllKatalog = async (req, res) => {
     try {
         const query = `
-            SELECT katalog.*, kategori.nama AS nama_kategori
+            SELECT katalog.id, katalog.kategori_id, katalog.brand, katalog.model, 
+                   katalog.year, katalog.transmisi, katalog.kapasitas, katalog.image_url, 
+                   katalog.status, katalog.created_at, kategori.nama AS nama_kategori
             FROM katalog
             LEFT JOIN kategori ON katalog.kategori_id = kategori.id
             ORDER BY katalog.created_at DESC
@@ -28,7 +30,9 @@ exports.getKatalogById = async (req, res) => {
     try {
         const { id } = req.params;
         const query = `
-            SELECT katalog.*, kategori.nama AS nama_kategori
+            SELECT katalog.id, katalog.kategori_id, katalog.brand, katalog.model, 
+                   katalog.year, katalog.transmisi, katalog.kapasitas, katalog.image_url, 
+                   katalog.status, katalog.created_at, kategori.nama AS nama_kategori
             FROM katalog
             LEFT JOIN kategori ON katalog.kategori_id = kategori.id
             WHERE katalog.id = ?
@@ -59,7 +63,8 @@ exports.getKatalogById = async (req, res) => {
 
 exports.createKatalog = async (req, res) => {
     try {
-        const { kategori_id, brand, model, year, transmisi, kapasitas, image_url, status } = req.body;
+        const { kategori_id, brand, model, year, transmisi, kapasitas, status } = req.body;
+        const image_url = req.file ? `/uploads/${req.file.filename}` : (req.body.image_url || null);
 
         if (!kategori_id || !brand || !model || !year || !transmisi || !kapasitas) {
             return res.status(400).json({
@@ -104,7 +109,8 @@ exports.createKatalog = async (req, res) => {
 exports.updateKatalog = async (req, res) => {
     try {
         const { id } = req.params;
-        const { kategori_id, brand, model, year, transmisi, kapasitas, image_url, status } = req.body;
+        const { kategori_id, brand, model, year, transmisi, kapasitas, status } = req.body;
+        const image_url = req.file ? `/uploads/${req.file.filename}` : (req.body.image_url || null);
 
         if (!kategori_id || !brand || !model || !year || !transmisi || !kapasitas) {
             return res.status(400).json({
