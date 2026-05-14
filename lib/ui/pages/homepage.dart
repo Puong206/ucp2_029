@@ -40,7 +40,17 @@ class _HomepageState extends State<Homepage> {
           ),
         ],
       ),
-      body: BlocBuilder<AuthBloc, AuthState>(
+      body: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is Unauthenticated) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              '/login',
+              (route) => false,
+            );
+          }
+        },
+        child: BlocBuilder<AuthBloc, AuthState>(
+
         builder: (context, authState) {
           String userName = 'User';
           if (authState is Authenticated) {
@@ -206,7 +216,9 @@ class _HomepageState extends State<Homepage> {
           );
         },
       ),
+      ), // end BlocListener
       bottomNavigationBar: BottomNavigationBar(
+
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
         selectedLabelStyle: const TextStyle(

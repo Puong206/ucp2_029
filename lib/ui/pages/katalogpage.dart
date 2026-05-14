@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ucp2/data/models/katalog_model.dart';
 import 'package:ucp2/logic/bloc/auth/auth_bloc.dart';
 import 'package:ucp2/logic/bloc/auth/auth_event.dart';
+import 'package:ucp2/logic/bloc/auth/auth_state.dart';
 import 'package:ucp2/logic/bloc/katalog/katalog_bloc.dart';
 import 'package:ucp2/ui/theme/app_theme.dart';
 import 'package:ucp2/ui/widgets/car_card.dart';
@@ -176,7 +177,16 @@ class _KatalogPageState extends State<KatalogPage> {
           ),
         ),
       ),
-      body: BlocConsumer<KatalogBloc, KatalogState>(
+      body: BlocListener<AuthBloc, AuthState>(
+        listener: (context, authState) {
+          if (authState is Unauthenticated) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              '/login',
+              (route) => false,
+            );
+          }
+        },
+        child: BlocConsumer<KatalogBloc, KatalogState>(
         listener: (context, state) {
           if (state is KatalogActionSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -314,7 +324,8 @@ class _KatalogPageState extends State<KatalogPage> {
             ],
           );
         },
-      ),
+      ), // end BlocConsumer
+      ), // end BlocListener
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,

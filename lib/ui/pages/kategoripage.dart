@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ucp2/data/models/kategori_model.dart';
 import 'package:ucp2/logic/bloc/auth/auth_bloc.dart';
 import 'package:ucp2/logic/bloc/auth/auth_event.dart';
+import 'package:ucp2/logic/bloc/auth/auth_state.dart';
 import 'package:ucp2/logic/bloc/kategori/kategori_bloc.dart';
 import 'package:ucp2/ui/theme/app_theme.dart';
 
@@ -335,7 +336,17 @@ class _KategoriPageState extends State<KategoriPage> {
           style: TextStyle(fontFamily: 'Mont', fontWeight: FontWeight.w700),
         ),
       ),
-      body: BlocConsumer<KategoriBloc, KategoriState>(
+      body: BlocListener<AuthBloc, AuthState>(
+        listener: (context, authState) {
+          if (authState is Unauthenticated) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              '/login',
+              (route) => false,
+            );
+          }
+        },
+        child: BlocConsumer<KategoriBloc, KategoriState>(
+
         listener: (context, state) {
           if (state is KategoriActionSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -402,8 +413,10 @@ class _KategoriPageState extends State<KategoriPage> {
 
           return const SizedBox.shrink();
         },
-      ),
+      ), // end BlocConsumer
+      ), // end BlocListener
       bottomNavigationBar: BottomNavigationBar(
+
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
         selectedLabelStyle: const TextStyle(
